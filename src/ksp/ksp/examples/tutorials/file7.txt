@@ -1,0 +1,131 @@
+************************************************************************************************************************
+***             WIDEN YOUR WINDOW TO 120 CHARACTERS.  Use 'enscript -r -fCourier9' to print this document            ***
+************************************************************************************************************************
+
+---------------------------------------------- PETSc Performance Summary: ----------------------------------------------
+
+/home/lv71041/selinger3d/petsc/src/ksp/ksp/examples/tutorials/./ex2 on a arch-linux2-c-opt named n03-015 with 256 processors, by selinger3d Thu Aug 24 15:12:23 2017
+Using Petsc Release Version 3.7.6, unknown 
+
+                         Max       Max/Min        Avg      Total 
+Time (sec):           5.912e-02      1.00690   5.900e-02
+Objects:              5.600e+01      1.00000   5.600e+01
+Flops:                2.662e+06      1.02620   2.661e+06  6.813e+08
+Flops/sec:            4.534e+07      1.03276   4.510e+07  1.155e+10
+MPI Messages:         1.599e+03      1.50000   1.591e+03  4.072e+05
+MPI Message Lengths:  5.485e+05      1.98460   3.422e+02  1.393e+08
+MPI Reductions:       1.059e+03      1.00000
+
+Flop counting convention: 1 flop = 1 real number operation of type (multiply/divide/add/subtract)
+                            e.g., VecAXPY() for real vectors of length N --> 2N flops
+                            and VecAXPY() for complex vectors of length N --> 8N flops
+
+Summary of Stages:   ----- Time ------  ----- Flops -----  --- Messages ---  -- Message Lengths --  -- Reductions --
+                        Avg     %Total     Avg     %Total   counts   %Total     Avg         %Total   counts   %Total 
+ 0:      Main Stage: 5.7631e-02  97.7%  6.8128e+08 100.0%  4.057e+05  99.6%  3.418e+02       99.9%  1.048e+03  99.0% 
+ 1:        Assembly: 1.3634e-03   2.3%  0.0000e+00   0.0%  1.528e+03   0.4%  3.294e-01        0.1%  1.000e+01   0.9% 
+
+------------------------------------------------------------------------------------------------------------------------
+See the 'Profiling' chapter of the users' manual for details on interpreting output.
+Phase summary info:
+   Count: number of times phase was executed
+   Time and Flops: Max - maximum over all processors
+                   Ratio - ratio of maximum to minimum over all processors
+   Mess: number of messages sent
+   Avg. len: average message length (bytes)
+   Reduct: number of global reductions
+   Global: entire computation
+   Stage: stages of a computation. Set stages with PetscLogStagePush() and PetscLogStagePop().
+      %T - percent time in this phase         %F - percent flops in this phase
+      %M - percent messages in this phase     %L - percent message lengths in this phase
+      %R - percent reductions in this phase
+   Total Mflop/s: 10e-6 * (sum of flops over all processors)/(max time over all processors)
+------------------------------------------------------------------------------------------------------------------------
+Event                Count      Time (sec)     Flops                             --- Global ---  --- Stage ---   Total
+                   Max Ratio  Max     Ratio   Max  Ratio  Mess   Avg len Reduct  %T %F %M %L %R  %T %F %M %L %R Mflop/s
+------------------------------------------------------------------------------------------------------------------------
+
+--- Event Stage 0: Main Stage
+
+MatMult              531 1.0 6.1591e-03 2.3 3.05e+05 1.3 4.1e+05 3.4e+02 0.0e+00  6 11100100  0   7 11100100  0 12625
+MatSolve             531 1.0 6.7925e-04 1.4 1.68e+05 1.0 0.0e+00 0.0e+00 0.0e+00  1  6  0  0  0   1  6  0  0  0 63240
+MatCholFctrNum         1 1.0 1.7881e-05 3.0 6.40e+01 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0   916
+MatICCFactorSym        1 1.0 4.0054e-05 3.4 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatGetRowIJ            1 1.0 2.2888e-0524.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+MatGetOrdering         1 1.0 4.1962e-05 3.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecMDot              513 1.0 1.8667e-02 1.8 1.00e+06 1.0 0.0e+00 0.0e+00 5.1e+02 25 38  0  0 48  25 38  0  0 49 13778
+VecNorm              532 1.0 2.9710e-02 1.2 6.81e+04 1.0 0.0e+00 0.0e+00 5.3e+02 45  3  0  0 50  47  3  0  0 51   587
+VecScale             531 1.0 3.3808e-04 1.8 3.40e+04 1.0 0.0e+00 0.0e+00 0.0e+00  0  1  0  0  0   0  1  0  0  0 25733
+VecCopy               18 1.0 1.7166e-05 6.0 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecSet               551 1.0 2.0099e-04 1.7 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+VecAXPY               36 1.0 2.0981e-05 5.2 4.61e+03 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0 56225
+VecMAXPY             531 1.0 8.5759e-04 1.4 1.08e+06 1.0 0.0e+00 0.0e+00 0.0e+00  1 41  0  0  0   1 41  0  0  0 321875
+VecScatterBegin      531 1.0 2.3100e-03 2.1 0.00e+00 0.0 4.1e+05 3.4e+02 0.0e+00  3  0100100  0   3  0100100  0     0
+VecScatterEnd        531 1.0 3.1445e-03 3.7 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  2  0  0  0  0   2  0  0  0  0     0
+VecNormalize         531 1.0 3.0195e-02 1.2 1.02e+05 1.0 0.0e+00 0.0e+00 5.3e+02 46  4  0  0 50  47  4  0  0 51   864
+KSPGMRESOrthog       513 1.0 1.9823e-02 1.7 2.02e+06 1.0 0.0e+00 0.0e+00 5.1e+02 27 76  0  0 48  27 76  0  0 49 26052
+KSPSetUp               2 1.0 4.7922e-05 1.8 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+KSPSolve               1 1.0 5.5051e-02 1.0 2.66e+06 1.0 4.0e+05 3.4e+02 1.0e+03 93100 99100 99  95100100100100 12372
+PCSetUp                2 1.0 2.3580e-04 1.6 6.40e+01 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0    69
+PCSetUpOnBlocks        1 1.0 1.3614e-04 1.7 6.40e+01 1.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0   120
+PCApply              531 1.0 7.8919e-03 1.3 1.68e+05 1.0 0.0e+00 0.0e+00 0.0e+00 11  6  0  0  0  11  6  0  0  0  5443
+
+--- Event Stage 1: Assembly
+
+MatAssemblyBegin       1 1.0 5.3000e-04 2.0 0.00e+00 0.0 0.0e+00 0.0e+00 2.0e+00  1  0  0  0  0  29  0  0  0 20     0
+MatAssemblyEnd         1 1.0 9.5201e-04 1.1 0.00e+00 0.0 1.5e+03 8.8e+01 8.0e+00  2  0  0  0  1  68  0100100 80     0
+VecSet                 1 1.0 1.5020e-05 7.9 0.00e+00 0.0 0.0e+00 0.0e+00 0.0e+00  0  0  0  0  0   0  0  0  0  0     0
+------------------------------------------------------------------------------------------------------------------------
+
+Memory usage is given in bytes:
+
+Object Type          Creations   Destructions     Memory  Descendants' Mem.
+Reports information only for process 0.
+
+--- Event Stage 0: Main Stage
+
+              Matrix     4              4        23804     0.
+              Vector    39             40        85024     0.
+      Vector Scatter     0              1         1072     0.
+           Index Set     3              3         2840     0.
+       Krylov Solver     2              2        19560     0.
+      Preconditioner     2              2         1848     0.
+              Viewer     1              0            0     0.
+
+--- Event Stage 1: Assembly
+
+              Vector     2              1         1648     0.
+      Vector Scatter     1              0            0     0.
+           Index Set     2              2         1812     0.
+========================================================================================================================
+Average time to get PetscTime(): 0.
+Average time for MPI_Barrier(): 1.32084e-05
+Average time for zero size MPI_Send(): 4.62867e-06
+#PETSc Option Table entries:
+-log_view :file7.txt
+-m 128
+-n 128
+#End of PETSc Option Table entries
+Compiled without FORTRAN kernels
+Compiled with full precision matrices (default)
+sizeof(short) 2 sizeof(int) 4 sizeof(long) 8 sizeof(void*) 8 sizeof(PetscScalar) 8 sizeof(PetscInt) 4
+Configure options: --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0
+-----------------------------------------
+Libraries compiled on Thu Aug 24 10:34:32 2017 on l32 
+Machine characteristics: Linux-3.10.0-327.36.3.el7.x86_64-x86_64-with-centos-7.2.1511-Core
+Using PETSc directory: /home/lv71041/selinger3d/petsc
+Using PETSc arch: arch-linux2-c-opt
+-----------------------------------------
+
+Using C compiler: mpicc  -fPIC  -Wall -Wwrite-strings -Wno-strict-aliasing -Wno-unknown-pragmas -fvisibility=hidden -g -O  ${COPTFLAGS} ${CFLAGS}
+Using Fortran compiler: mpif90  -fPIC -Wall -ffree-line-length-0 -Wno-unused-dummy-argument -g -O   ${FOPTFLAGS} ${FFLAGS} 
+-----------------------------------------
+
+Using include paths: -I/home/lv71041/selinger3d/petsc/arch-linux2-c-opt/include -I/home/lv71041/selinger3d/petsc/include -I/home/lv71041/selinger3d/petsc/include -I/home/lv71041/selinger3d/petsc/arch-linux2-c-opt/include
+-----------------------------------------
+
+Using C linker: mpicc
+Using Fortran linker: mpif90
+Using libraries: -Wl,-rpath,/home/lv71041/selinger3d/petsc/arch-linux2-c-opt/lib -L/home/lv71041/selinger3d/petsc/arch-linux2-c-opt/lib -lpetsc -Wl,-rpath,/home/lv71041/selinger3d/petsc/arch-linux2-c-opt/lib -L/home/lv71041/selinger3d/petsc/arch-linux2-c-opt/lib -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux/mpi/intel64/lib/debug_mt -L/cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux/mpi/intel64/lib/debug_mt -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux/mpi/intel64/lib -L/cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux/mpi/intel64/lib -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/gcc/5.3.0/lib64 -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/gcc/5.3.0/lib64 -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/gcc/5.3.0/lib/gcc/x86_64-unknown-linux-gnu/5.3.0 -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/gcc/5.3.0/lib/gcc/x86_64-unknown-linux-gnu/5.3.0 -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/matplotlib/1.5.3/intel/16/intel-mkl/11/python/3.4/numpy/1.9.1/lib -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/matplotlib/1.5.3/intel/16/intel-mkl/11/python/3.4/numpy/1.9.1/lib -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/numpy/1.9.1/gcc/5.3/intel-mkl/11/python/3.4/lib -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/numpy/1.9.1/gcc/5.3/intel-mkl/11/python/3.4/lib -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/python/3.4.2/intel/16/lib -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/python/3.4.2/intel/16/lib -Wl,-rpath,/cm/shared/apps/intel/composer_xe_2015.2.164/mkl/lib/intel64 -L/cm/shared/apps/intel/composer_xe_2015.2.164/mkl/lib/intel64 -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/tbb/lib/intel64/gcc4.1 -L/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/tbb/lib/intel64/gcc4.1 -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/compiler/lib/intel64_lin -L/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/compiler/lib/intel64_lin -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/daal/lib/intel64_lin -L/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/daal/lib/intel64_lin -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/tbb/lib/intel64/gcc4.4 -L/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/tbb/lib/intel64/gcc4.4 -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/compiler/lib/intel64 -L/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/compiler/lib/intel64 -Wl,-rpath,/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/ipp/lib/intel64 -L/cm/shared/apps/intel/compilers_and_libraries_2016.4.258/linux/ipp/lib/intel64 -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/gcc/5.3.0/lib -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/gcc/5.3.0/lib -Wl,-rpath,/opt/sw/x86_64/glibc-2.17/ivybridge-ep/valgrind/3.12.0/lib -L/opt/sw/x86_64/glibc-2.17/ivybridge-ep/valgrind/3.12.0/lib -Wl,-rpath,/cm/shared/apps/slurm/current/lib -L/cm/shared/apps/slurm/current/lib -Wl,-rpath,/cm/shared/apps/slurm/current/lib/slurm -L/cm/shared/apps/slurm/current/lib/slurm -Wl,-rpath,/opt/intel/mpi-rt/2107.0.0/intel64/lib/debug_mt -Wl,-rpath,/opt/intel/mpi-rt/2017.0.0/intel64/lib -Wl,-rpath,/opt/intel/mpi-rt/2017.0.0/intel64/lib/debug_mt -lflapack -lfblas -lX11 -lhwloc -lssl -lcrypto -lm -lgfortran -lm -lgfortran -lm -lquadmath -lmpicxx -lstdc++ -lm -ldl -lmpifort -lmpi -lmpigi -lrt -lpthread -lgcc_s -ldl
+-----------------------------------------
+

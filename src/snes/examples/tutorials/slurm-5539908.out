@@ -1,0 +1,10 @@
+  Loading intel/17 from: /cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux
+  Loading openmpi/2.0.2 from: /opt/sw/x86_64/glibc-2.17/ivybridge-ep/openmpi/2.0.2/intel/17
+  Loading python/3.4.2.old
+00: Level 0 domain size (m)    1e+04 x    1e+04 x    1e+03, num elements 256 x 256 x 16 (1048576), size (m) 39.0625 x 39.0625 x 66.6667
+00: Solution statistics after solve: Full
+00: DIVERGED_LINEAR_SOLVE: Number of SNES iterations = 9, total linear iterations = 450
+00: |X|_2 157.855   0. <= u <=  0.175775   -0.00748696 <= v <=  0.00748635   0. <= c <=  0.175775 
+00: Surface statistics: u in [1.515437e-01, 1.742323e-01] mean 1.665600e-01
+00: Global eta range   3.25579e+11 to 9.2273e+12 converged range 4.17678e+11 to 9.22127e+12
+00: Global beta2 range 1e+100 to 0. converged range 1e+100 to 0.

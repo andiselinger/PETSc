@@ -32,7 +32,7 @@ int main(int argc,char **args)
   KSP            ksp;     /* linear solver context */
   PetscRandom    rctx;     /* random number generator context */
   PetscReal      norm;     /* norm of solution error */
-  PetscInt       i,j,Ii,J,Istart,Iend,m = 8,n = 7,its;
+  PetscInt       i,j,Ii,J,Istart,Iend,m = 8,n = 8,its;
   PetscErrorCode ierr;
   PetscBool      flg = PETSC_FALSE;
   PetscScalar    v;

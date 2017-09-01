@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+#SBATCH -J chk
+#SBATCH -N 8
+#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-core=1
+#SBATCH --mail-type=BEGIN    # first have to state the type of event to occur 
+#SBATCH --mail-user=<selinge@kth.se>   # and then your email address
+
+# when srun is used, you need to set:
+export I_MPI_PMI_LIBRARY=/cm/shared/apps/slurm/current/lib/libpmi.so
+
+srun -l -N8 -n128 ex2 -m 512 -n 512 -log_view :result_N128.txt
+# or
+#<mpirun -np 32 ex2>

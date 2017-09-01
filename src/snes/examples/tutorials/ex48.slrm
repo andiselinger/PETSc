@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+#SBATCH -J ex48
+#SBATCH -N 16
+#SBATCH --ntasks-per-node=4		# originally 16
+#SBATCH --ntasks-per-core=1
+#SBATCH --mail-type=BEGIN    # first have to state the type of event to occur 
+#SBATCH --mail-user=<selinge@kth.se>   # and then your email address
+#SBATCH --time=00:10:00               # Time limit hrs:min:sec
+
+# when srun is used, you need to set:
+export I_MPI_PMI_LIBRARY=/cm/shared/apps/slurm/current/lib/libpmi.so
+export PETSC_DIR=/home/lv71041/selinger3d/petsc PETSC_ARCH=arch-linux2-c-opt
+
+
+module load intel/17 openmpi/2.0.2 python
+# module load intel-mpi/2017.3 valgrind/3.12.0 python
+
+srun -l -N16 -n64 ex48 -M 192 -N 192 -P 16 -ksp_max_it 50 -log_view :N16_n64_192.txt -pc_type jacobi -snes_max_linear_solve_fail 10 -thi_mat_type sbaij 
+# or
+#mpirun -np 32 ex48 -M 384 -N 384 -P 16 -ksp_max_it 50 -log_view -pc_type jacobi -snes_max_linear_solve_fail 10 -thi_mat_type sbaij
+
+# python ./ex48.py
+

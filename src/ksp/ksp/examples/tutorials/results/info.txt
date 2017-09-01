@@ -1,0 +1,6 @@
+ex2
+
+intel mpi
+512x512
+2 threads per node
+

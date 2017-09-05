@@ -1,4 +1,0 @@
-  Loading intel-mpi/2017.3 from: /cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux/mpi
-  Loading valgrind/3.12.0 from: /opt/sw/x86_64/glibc-2.17/ivybridge-ep/valgrind/3.12.0/
-  Loading python/3.4.2.old
-00: Norm of error 2.56704e-06 iterations 9

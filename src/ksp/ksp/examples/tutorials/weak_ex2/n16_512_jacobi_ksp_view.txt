@@ -1,0 +1,17 @@
+KSP Object: 16 MPI processes
+  type: gmres
+    GMRES: restart=30, using Classical (unmodified) Gram-Schmidt Orthogonalization with no iterative refinement
+    GMRES: happy breakdown tolerance 1e-30
+  maximum iterations=50, initial guess is zero
+  tolerances:  relative=2.38186e-09, absolute=1e-50, divergence=10000.
+  left preconditioning
+  using PRECONDITIONED norm type for convergence test
+PC Object: 16 MPI processes
+  type: jacobi
+  linear system matrix = precond matrix:
+  Mat Object:   16 MPI processes
+    type: mpiaij
+    rows=4194304, cols=4194304
+    total: nonzeros=20963328, allocated nonzeros=41943040
+    total number of mallocs used during MatSetValues calls =0
+      not using I-node (on process 0) routines

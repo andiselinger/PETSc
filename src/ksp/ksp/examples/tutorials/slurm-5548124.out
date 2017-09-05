@@ -1,0 +1,1109 @@
+  Loading intel-mpi/2017.3 from: /cm/shared/apps/intel/compilers_and_libraries_2017.4.196/linux/mpi
+  Loading valgrind/3.12.0 from: /opt/sw/x86_64/glibc-2.17/ivybridge-ep/valgrind/3.12.0/
+  Loading python/3.4.2.old
+00: Norm of error 4059.29 iterations 50
+00: Norm of error 1.4284e-06 iterations 15
+00: Norm of error 3.64677e-07 iterations 10
+00: slurmstepd: error: *** STEP 5548124.3 ON n10-003 CANCELLED AT 2017-09-01T22:37:39 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 5548124 ON n10-003 CANCELLED AT 2017-09-01T22:37:39 DUE TO TIME LIMIT ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: got SIGCONT
+52: [52]PETSC ERROR: ------------------------------------------------------------------------
+52: [52]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+52: [52]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+52: [52]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+52: [52]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+52: [52]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+52: [52]PETSC ERROR: to get more information on the crash.
+52: [52]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+52: [52]PETSC ERROR: Signal received
+52: [52]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+59: [59]PETSC ERROR: ------------------------------------------------------------------------
+59: [59]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+59: [59]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+59: [59]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+59: [59]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+59: [59]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+59: [59]PETSC ERROR: to get more information on the crash.
+59: [59]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+59: [59]PETSC ERROR: Signal received
+59: [59]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+59: [59]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+59: [59]PETSC ERROR: 
+52: [52]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+52: [52]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+52: [52]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+52: [52]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+52: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 52
+52: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 52)
+59: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+59: [59]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+59: [59]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+59: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 59
+59: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 59)
+54: [54]PETSC ERROR: ------------------------------------------------------------------------
+54: [54]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+54: [54]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+54: [54]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+54: [54]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+54: [54]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+54: [54]PETSC ERROR: to get more information on the crash.
+54: [54]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+54: [54]PETSC ERROR: Signal received
+54: [54]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+54: [54]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+54: [54]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+54: [54]PETSC ERROR:
+54:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+54: [54]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+54: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 54
+54: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 54)
+50: [50]PETSC ERROR: ------------------------------------------------------------------------
+50: [50]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+50: [50]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+50: [50]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+50: [50]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+50: [50]PETSC ERROR: 
+50: configure using --with-debugging=yes, recompile, link, and run 
+50: [50]PETSC ERROR: to get more information on the crash.
+50: [50]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+50: [50]PETSC ERROR: Signal received
+50: [50]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+50: [50]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+50: [50]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+50: [50]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+50: [50]PETSC ERROR: 
+50: #1 User provided function() line 0 in  unknown file
+50: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 50
+50: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 50)
+63: [63]PETSC ERROR: ------------------------------------------------------------------------
+63: [63]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+63: [63]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+63: [63]PETSC ERROR: 
+63: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+63: [63]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+63: [63]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+63: [63]PETSC ERROR: to get more information on the crash.
+63: [63]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+63: [63]PETSC ERROR: Signal received
+63: [63]PETSC ERROR: 
+58: [58]PETSC ERROR: ------------------------------------------------------------------------
+63: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+63: [63]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+63: [63]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+63: [63]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+63: [63]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+58: [58]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+58: [58]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+58: [58]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+58: [58]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+58: [58]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+58: [58]PETSC ERROR: to get more information on the crash.
+58: [58]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+58: [58]PETSC ERROR: Signal received
+63: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 63
+63: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 63)
+58: [58]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+58: [58]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+58: [58]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+58: [58]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+58: [58]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+58: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 58
+58: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 58)
+62: [62]PETSC ERROR: 
+62: ------------------------------------------------------------------------
+62: [62]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+62: [62]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+62: [62]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+62: [62]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+62: [62]PETSC ERROR: 
+62: configure using --with-debugging=yes, recompile, link, and run 
+62: [62]PETSC ERROR: to get more information on the crash.
+62: [62]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+62: [62]PETSC ERROR: Signal received
+62: [62]PETSC ERROR: 
+60: [60]PETSC ERROR: ------------------------------------------------------------------------
+60: [60]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+60: [60]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+60: [60]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+60: [60]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+60: [60]PETSC ERROR: 
+27: [27]PETSC ERROR: ------------------------------------------------------------------------
+27: [27]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+27: [27]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+27: [27]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+27: [27]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+27: [27]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+27: [27]PETSC ERROR: 
+62: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+62: [62]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+62: [62]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+62: [62]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+62: [62]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+60: configure using --with-debugging=yes, recompile, link, and run 
+60: [60]PETSC ERROR: to get more information on the crash.
+60: [60]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+60: [60]PETSC ERROR: Signal received
+60: [60]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+60: [60]PETSC ERROR: 
+62: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 62
+62: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 62)
+48: [48]PETSC ERROR: ------------------------------------------------------------------------
+48: [48]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+48: [48]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+48: [48]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+48: [48]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+60: Petsc Release Version 3.7.6, unknown 
+60: [60]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+60: [60]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+60: [60]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+48: [48]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+48: [48]PETSC ERROR: to get more information on the crash.
+48: [48]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+48: [48]PETSC ERROR: Signal received
+27: to get more information on the crash.
+27: [27]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+27: [27]PETSC ERROR: Signal received
+27: [27]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+27: [27]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+27: [27]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+27: [27]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+27: [27]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+60: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 60
+60: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 60)
+48: [48]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+48: [48]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+48: [48]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+48: [48]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+48: [48]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+56: [56]PETSC ERROR: ------------------------------------------------------------------------
+56: [56]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+56: [56]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+56: [56]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+56: [56]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+56: [56]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+56: [56]PETSC ERROR: to get more information on the crash.
+23: [23]PETSC ERROR: ------------------------------------------------------------------------
+23: [23]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+23: [23]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+23: [23]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+23: [23]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+23: [23]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+23: [23]PETSC ERROR: to get more information on the crash.
+23: [23]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+23: [23]PETSC ERROR: Signal received
+23: [23]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+23: [23]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+23: [23]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+23: [23]PETSC ERROR:
+48: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 48
+48: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 48)
+56: [56]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+56: [56]PETSC ERROR: Signal received
+56: [56]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+56: [56]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+56: [56]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+56: [56]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+56: [56]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+56: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 56
+56: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 56)
+23:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+23: [23]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+51: [51]PETSC ERROR: ------------------------------------------------------------------------
+51: [51]PETSC ERROR: 
+27: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 27
+27: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 27)
+51: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+51: [51]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+51: [51]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+51: [51]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+51: [51]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+51: [51]PETSC ERROR: to get more information on the crash.
+23: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 23
+23: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 23)
+51: [51]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+51: [51]PETSC ERROR: Signal received
+51: [51]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+51: [51]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+51: [51]PETSC ERROR: 
+30: [30]PETSC ERROR: ------------------------------------------------------------------------
+30: [30]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+30: [30]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+30: [30]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+30: [30]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+30: [30]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+30: [30]PETSC ERROR: to get more information on the crash.
+51: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+51: [51]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+51: [51]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+51: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 51
+51: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 51)
+55: [55]PETSC ERROR: ------------------------------------------------------------------------
+55: [55]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+55: [55]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+55: [55]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+55: [55]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+55: [55]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+55: [55]PETSC ERROR: 
+53: [53]PETSC ERROR: ------------------------------------------------------------------------
+26: [26]PETSC ERROR: ------------------------------------------------------------------------
+26: [26]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+26: [26]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+26: [26]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+26: [26]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+26: [26]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+26: [26]PETSC ERROR: to get more information on the crash.
+26: [26]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+55: to get more information on the crash.
+55: [55]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+55: [55]PETSC ERROR: Signal received
+55: [55]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+55: [55]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+55: [55]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+30: [30]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+30: [30]PETSC ERROR: Signal received
+30: [30]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+30: [30]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+30: [30]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+30: [30]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+30: [30]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+30: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 30
+26: [26]PETSC ERROR: Signal received
+26: [26]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+26: [26]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+26: [26]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+26: [26]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+26: [26]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+30: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 30)
+26: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 26
+26: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 26)
+28: [28]PETSC ERROR: ------------------------------------------------------------------------
+28: [28]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+28: [28]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+28: [28]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+28: [28]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+28: [28]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+28: [28]PETSC ERROR: to get more information on the crash.
+28: [28]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+28: [28]PETSC ERROR: Signal received
+28: [28]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+28: [28]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+28: [28]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+28: [28]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+28: [28]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+28: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 28
+28: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 28)
+53: [53]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+53: [53]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+53: [53]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+53: [53]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+53: [53]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+53: [53]PETSC ERROR: to get more information on the crash.
+55: [55]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+55: [55]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+53: [53]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+53: [53]PETSC ERROR: Signal received
+53: [53]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+53: [53]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+53: [53]PETSC ERROR: 
+55: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 55
+55: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 55)
+53: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+53: [53]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+53: [53]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+53: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 53
+53: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 53)
+32: [32]PETSC ERROR: ------------------------------------------------------------------------
+32: [32]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+32: [32]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+32: [32]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+32: [32]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+32: [32]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+32: [32]PETSC ERROR: to get more information on the crash.
+61: [61]PETSC ERROR: ------------------------------------------------------------------------
+61: [61]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+61: [61]PETSC ERROR: 
+34: [34]PETSC ERROR: ------------------------------------------------------------------------
+34: [34]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+34: [34]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+34: [34]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+34: [34]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+34: [34]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+34: [34]PETSC ERROR: to get more information on the crash.
+34: [34]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+34: [34]PETSC ERROR: Signal received
+34: [34]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+34: [34]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+34: [34]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+34: [34]PETSC ERROR:
+49: [49]PETSC ERROR: 
+34:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+34: [34]PETSC ERROR: 
+61: Try option -start_in_debugger or -on_error_attach_debugger
+61: [61]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+61: [61]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+61: [61]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+61: [61]PETSC ERROR: to get more information on the crash.
+61: [61]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+36: [36]PETSC ERROR: ------------------------------------------------------------------------
+36: [36]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+36: [36]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+36: [36]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+36: [36]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+36: [36]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+36: [36]PETSC ERROR: to get more information on the crash.
+36: [36]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+36: [36]PETSC ERROR: Signal received
+36: [36]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+36: [36]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+36: [36]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+36: [36]PETSC ERROR:
+49: ------------------------------------------------------------------------
+49: [49]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+49: [49]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+49: [49]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+49: [49]PETSC ERROR: 
+36:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+36: [36]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+57: [57]PETSC ERROR: ------------------------------------------------------------------------
+57: [57]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+57: [57]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+57: [57]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+57: [57]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+41: [41]PETSC ERROR: ------------------------------------------------------------------------
+41: [41]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+41: [41]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+41: [41]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+41: [41]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+41: [41]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+41: [41]PETSC ERROR: to get more information on the crash.
+41: [41]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+41: [41]PETSC ERROR: Signal received
+41: [41]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+41: [41]PETSC ERROR: 
+61: [61]PETSC ERROR: Signal received
+61: [61]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+61: [61]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+61: [61]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+61: [61]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+61: [61]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+49: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+49: [49]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+49: [49]PETSC ERROR: to get more information on the crash.
+49: [49]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+49: [49]PETSC ERROR: Signal received
+49: [49]PETSC ERROR: 
+57: [57]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+57: [57]PETSC ERROR: to get more information on the crash.
+57: [57]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+57: [57]PETSC ERROR: Signal received
+42: [42]PETSC ERROR: ------------------------------------------------------------------------
+42: [42]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+42: [42]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+42: [42]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+42: [42]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+42: [42]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+42: [42]PETSC ERROR: to get more information on the crash.
+42: [42]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+42: [42]PETSC ERROR: Signal received
+42: [42]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+42: [42]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+42: [42]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+42: [42]PETSC ERROR:
+61: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 61
+61: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 61)
+42:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+42: [42]PETSC ERROR: 
+49: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+49: [49]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+49: [49]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+49: [49]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+49: [49]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+44: [44]PETSC ERROR: ------------------------------------------------------------------------
+44: [44]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+44: [44]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+44: [44]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+44: [44]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+44: [44]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+44: [44]PETSC ERROR: to get more information on the crash.
+44: [44]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+44: [44]PETSC ERROR: Signal received
+44: [44]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+44: [44]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+44: [44]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+44: [44]PETSC ERROR:
+57: [57]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+57: [57]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+57: [57]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-008 by selinger3d Fri Sep  1 22:35:30 2017
+57: [57]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+57: [57]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+44:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+44: [44]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+44: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 44
+49: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 49
+49: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 49)
+46: [46]PETSC ERROR: ------------------------------------------------------------------------
+46: [46]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+46: [46]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+46: [46]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+46: [46]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+46: [46]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+46: [46]PETSC ERROR: to get more information on the crash.
+46: [46]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+46: [46]PETSC ERROR: Signal received
+46: [46]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+46: [46]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+46: [46]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+46: [46]PETSC ERROR:
+57: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 57
+57: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 57)
+46:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+46: [46]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+46: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 46
+46: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 46)
+32: [32]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+32: [32]PETSC ERROR: Signal received
+32: [32]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+32: [32]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+32: [32]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+32: [32]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+32: [32]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+32: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 32
+32: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 32)
+34: #1 User provided function() line 0 in  unknown file
+34: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 34
+34: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 34)
+36: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 36
+36: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 36)
+40: [40]PETSC ERROR: ------------------------------------------------------------------------
+40: [40]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+40: [40]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+40: [40]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+40: [40]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+40: [40]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+40: [40]PETSC ERROR: to get more information on the crash.
+40: [40]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+40: [40]PETSC ERROR: Signal received
+40: [40]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+40: [40]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+40: [40]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+40: [40]PETSC ERROR:
+40:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+40: [40]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+40: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 40
+40: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 40)
+41: Petsc Release Version 3.7.6, unknown 
+41: [41]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+41: [41]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+41: [41]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+41: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 41
+41: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 41)
+42: #1 User provided function() line 0 in  unknown file
+42: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 42
+42: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 42)
+44: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 44)
+38: [38]PETSC ERROR: ------------------------------------------------------------------------
+38: [38]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+38: [38]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+38: [38]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+38: [38]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+38: [38]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+38: [38]PETSC ERROR: to get more information on the crash.
+38: [38]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+38: [38]PETSC ERROR: Signal received
+38: [38]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+38: [38]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+38: [38]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+38: [38]PETSC ERROR:
+38:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+38: [38]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+38: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 38
+38: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 38)
+39: [39]PETSC ERROR: ------------------------------------------------------------------------
+39: [39]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+39: [39]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+39: [39]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+39: [39]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+39: [39]PETSC ERROR: 
+39: configure using --with-debugging=yes, recompile, link, and run 
+39: [39]PETSC ERROR: to get more information on the crash.
+39: [39]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+39: [39]PETSC ERROR: Signal received
+39: [39]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+39: [39]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+39: [39]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+39: [39]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+39: [39]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+39: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 39
+39: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 39)
+45: [45]PETSC ERROR: ------------------------------------------------------------------------
+45: [45]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+45: [45]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+45: [45]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+45: [45]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+45: [45]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+45: [45]PETSC ERROR: to get more information on the crash.
+45: [45]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+45: [45]PETSC ERROR: Signal received
+45: [45]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+45: [45]PETSC ERROR: 
+35: [35]PETSC ERROR: ------------------------------------------------------------------------
+35: [35]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+35: [35]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+35: [35]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+35: [35]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+35: [35]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+35: [35]PETSC ERROR: to get more information on the crash.
+35: [35]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+35: [35]PETSC ERROR: Signal received
+35: [35]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+35: [35]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+35: [35]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+35: [35]PETSC ERROR:
+35:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+35: [35]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+45: Petsc Release Version 3.7.6, unknown 
+45: [45]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+45: [45]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+45: [45]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+45: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 45
+45: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 45)
+35: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 35
+35: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 35)
+33: [33]PETSC ERROR: ------------------------------------------------------------------------
+33: [33]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+33: [33]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+33: [33]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+33: [33]PETSC ERROR: 
+33: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+33: [33]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+33: [33]PETSC ERROR: to get more information on the crash.
+33: [33]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+33: [33]PETSC ERROR: Signal received
+33: [33]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+33: [33]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+33: [33]PETSC ERROR: 
+33: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+33: [33]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+33: [33]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+33: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 33
+33: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 33)
+47: [47]PETSC ERROR: ------------------------------------------------------------------------
+47: [47]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+47: [47]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+47: [47]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+47: [47]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+47: [47]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+47: [47]PETSC ERROR: to get more information on the crash.
+47: [47]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+37: [37]PETSC ERROR: ------------------------------------------------------------------------
+37: [37]PETSC ERROR: 
+47: [47]PETSC ERROR: Signal received
+47: [47]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+47: [47]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+47: [47]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+47: [47]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+47: [47]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+37: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+37: [37]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+37: [37]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+37: [37]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+37: [37]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+37: [37]PETSC ERROR: to get more information on the crash.
+37: [37]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+37: [37]PETSC ERROR: Signal received
+47: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 47
+47: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 47)
+37: [37]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+37: [37]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+37: [37]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+37: [37]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+37: [37]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+37: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 37
+37: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 37)
+43: [43]PETSC ERROR: 
+31: [31]PETSC ERROR: ------------------------------------------------------------------------
+31: [31]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+31: [31]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+43: ------------------------------------------------------------------------
+43: [43]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+43: [43]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+43: [43]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+43: [43]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+43: [43]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+43: [43]PETSC ERROR: 
+43: to get more information on the crash.
+43: [43]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+43: [43]PETSC ERROR: Signal received
+43: [43]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+43: [43]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+43: [43]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-006 by selinger3d Fri Sep  1 22:35:30 2017
+43: [43]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+43: [43]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+31: [31]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+31: [31]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+31: [31]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+31: [31]PETSC ERROR: to get more information on the crash.
+31: [31]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+31: [31]PETSC ERROR: Signal received
+31: [31]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+43: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 43
+43: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 43)
+31: [31]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+31: [31]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+31: [31]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+31: [31]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+31: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 31
+31: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 31)
+29: [29]PETSC ERROR: ------------------------------------------------------------------------
+29: [29]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+29: [29]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+29: [29]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+29: [29]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+29: [29]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+29: [29]PETSC ERROR: to get more information on the crash.
+29: [29]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+29: [29]PETSC ERROR: Signal received
+29: [29]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+29: [29]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+29: [29]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+29: [29]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+29: [29]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+29: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 29
+29: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 29)
+25: [25]PETSC ERROR: 
+25: ------------------------------------------------------------------------
+25: [25]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+25: [25]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+25: [25]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+25: [25]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+25: [25]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+25: [25]PETSC ERROR: to get more information on the crash.
+25: [25]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+25: [25]PETSC ERROR: Signal received
+25: [25]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+25: [25]PETSC ERROR: 
+25: Petsc Release Version 3.7.6, unknown 
+25: [25]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+25: [25]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+25: [25]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+25: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 25
+25: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 25)
+16: [16]PETSC ERROR: ------------------------------------------------------------------------
+16: [16]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+16: [16]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+16: [16]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+16: [16]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+16: [16]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+16: [16]PETSC ERROR: to get more information on the crash.
+16: [16]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+16: [16]PETSC ERROR: Signal received
+16: [16]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+16: [16]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+16: [16]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+16: [16]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+16: [16]PETSC ERROR: 
+16: #1 User provided function() line 0 in  unknown file
+16: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 16
+16: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 16)
+21: [21]PETSC ERROR: ------------------------------------------------------------------------
+21: [21]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+21: [21]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+21: [21]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+21: [21]PETSC ERROR: 
+21: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+21: [21]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+21: [21]PETSC ERROR: to get more information on the crash.
+21: [21]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+21: [21]PETSC ERROR: Signal received
+21: [21]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+21: [21]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+21: [21]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+21: [21]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+21: [21]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+21: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 21
+21: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 21)
+19: [19]PETSC ERROR: 
+19: ------------------------------------------------------------------------
+19: [19]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+19: [19]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+19: [19]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+19: [19]PETSC ERROR: 
+19: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+19: [19]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+19: [19]PETSC ERROR: to get more information on the crash.
+19: [19]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+19: [19]PETSC ERROR: Signal received
+19: [19]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+19: [19]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+19: [19]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+19: [19]PETSC ERROR: 
+19: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+19: [19]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+19: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 19
+19: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 19)
+17: [17]PETSC ERROR: 
+17: ------------------------------------------------------------------------
+17: [17]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+17: [17]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+17: [17]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+17: [17]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+17: [17]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+17: [17]PETSC ERROR: to get more information on the crash.
+17: [17]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+17: [17]PETSC ERROR: Signal received
+17: [17]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+17: [17]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+17: [17]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+17: [17]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+17: [17]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+17: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 17
+17: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 17)
+18: [18]PETSC ERROR: ------------------------------------------------------------------------
+18: [18]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+18: [18]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+18: [18]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+18: [18]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+18: [18]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+18: [18]PETSC ERROR: to get more information on the crash.
+18: [18]PETSC ERROR: 
+18: --------------------- Error Message --------------------------------------------------------------
+18: [18]PETSC ERROR: Signal received
+18: [18]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+18: [18]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+18: [18]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+18: [18]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+18: [18]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+18: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 18
+18: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 18)
+24: [24]PETSC ERROR: 
+24: ------------------------------------------------------------------------
+24: [24]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+24: [24]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+24: [24]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+24: [24]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+24: [24]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+24: [24]PETSC ERROR: 
+24: to get more information on the crash.
+24: [24]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+24: [24]PETSC ERROR: Signal received
+24: [24]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+24: [24]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+24: [24]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+24: [24]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+20: [20]PETSC ERROR: ------------------------------------------------------------------------
+20: [20]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+24: [24]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+24: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 24
+20: [20]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+20: [20]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+20: [20]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+20: [20]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+20: [20]PETSC ERROR: to get more information on the crash.
+24: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 24)
+20: [20]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+20: [20]PETSC ERROR: Signal received
+20: [20]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+20: [20]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+20: [20]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+20: [20]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+20: [20]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+20: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 20
+20: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 20)
+22: [22]PETSC ERROR: 
+22: ------------------------------------------------------------------------
+22: [22]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+22: [22]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+22: [22]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+22: [22]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+22: [22]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+22: [22]PETSC ERROR: 
+22: to get more information on the crash.
+22: [22]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+22: [22]PETSC ERROR: Signal received
+22: [22]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+22: [22]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+22: [22]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-004 by selinger3d Fri Sep  1 22:35:30 2017
+22: [22]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+22: [22]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+22: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 22
+22: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 22)
+01: [1]PETSC ERROR: ------------------------------------------------------------------------
+01: [1]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+01: [1]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+01: [1]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+01: [1]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+01: [1]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+01: [1]PETSC ERROR: to get more information on the crash.
+03: [3]PETSC ERROR: ------------------------------------------------------------------------
+03: [3]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+03: [3]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+03: [3]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+03: [3]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+03: [3]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+03: [3]PETSC ERROR: to get more information on the crash.
+03: [3]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+03: [3]PETSC ERROR: Signal received
+03: [3]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+03: [3]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+04: [4]PETSC ERROR: ------------------------------------------------------------------------
+04: [4]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+04: [4]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+04: [4]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+04: [4]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+04: [4]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+04: [4]PETSC ERROR: to get more information on the crash.
+04: [4]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+04: [4]PETSC ERROR: Signal received
+04: [4]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+04: [4]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+04: [4]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+04: [4]PETSC ERROR: Configure op
+04: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+04: [4]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+06: [6]PETSC ERROR: ------------------------------------------------------------------------
+06: [6]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+06: [6]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+06: [6]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+06: [6]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+06: [6]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+06: [6]PETSC ERROR: to get more information on the crash.
+06: [6]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+06: [6]PETSC ERROR: Signal received
+06: [6]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+06: [6]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+06: [6]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+06: [6]PETSC ERROR: Configure op
+06: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+06: [6]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+07: [7]PETSC ERROR: ------------------------------------------------------------------------
+07: [7]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+07: [7]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+07: [7]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+07: [7]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+07: [7]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+07: [7]PETSC ERROR: to get more information on the crash.
+07: [7]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+07: [7]PETSC ERROR: Signal received
+07: [7]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+07: [7]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+07: [7]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+07: [7]PETSC ERROR: Configure op
+07: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+07: [7]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+07: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 7
+07: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 7)
+08: [8]PETSC ERROR: ------------------------------------------------------------------------
+08: [8]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+08: [8]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+08: [8]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+08: [8]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+08: [8]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+08: [8]PETSC ERROR: to get more information on the crash.
+08: [8]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+08: [8]PETSC ERROR: Signal received
+08: [8]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+08: [8]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+08: [8]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+08: [8]PETSC ERROR: Configure op
+08: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+08: [8]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+08: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 8
+08: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 8)
+10: [10]PETSC ERROR: ------------------------------------------------------------------------
+10: [10]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+10: [10]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+10: [10]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+10: [10]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+10: [10]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+10: [10]PETSC ERROR: to get more information on the crash.
+10: [10]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+10: [10]PETSC ERROR: Signal received
+10: [10]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+10: [10]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+10: [10]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+10: [10]PETSC ERROR:
+10:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+10: [10]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+10: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 10
+10: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 10)
+01: [1]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+01: [1]PETSC ERROR: Signal received
+01: [1]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+01: [1]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+01: [1]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+01: [1]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+01: [1]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+01: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 1
+01: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 1)
+02: [2]PETSC ERROR: ------------------------------------------------------------------------
+02: [2]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+02: [2]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+02: [2]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+02: [2]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+02: [2]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+02: [2]PETSC ERROR: to get more information on the crash.
+02: [2]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+02: [2]PETSC ERROR: Signal received
+02: [2]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+02: [2]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+02: [2]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+02: [2]PETSC ERROR: Configure op
+02: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+02: [2]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+02: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 2
+02: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 2)
+03: [3]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+03: [3]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+03: [3]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+03: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 3
+03: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 3)
+04: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 4
+04: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 4)
+06: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 6
+06: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 6)
+11: [11]PETSC ERROR: ------------------------------------------------------------------------
+11: [11]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+11: [11]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+11: [11]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+11: [11]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+11: [11]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+11: [11]PETSC ERROR: to get more information on the crash.
+11: [11]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+11: [11]PETSC ERROR: Signal received
+11: [11]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+11: [11]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+11: [11]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+11: [11]PETSC ERROR:
+11:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+11: [11]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+11: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 11
+11: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 11)
+12: [12]PETSC ERROR: ------------------------------------------------------------------------
+12: [12]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+12: [12]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+12: [12]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+12: [12]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+12: [12]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+12: [12]PETSC ERROR: to get more information on the crash.
+12: [12]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+12: [12]PETSC ERROR: Signal received
+12: [12]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+12: [12]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+12: [12]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+12: [12]PETSC ERROR:
+12:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+12: [12]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+12: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 12
+12: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 12)
+13: [13]PETSC ERROR: ------------------------------------------------------------------------
+13: [13]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+13: [13]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+13: [13]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+13: [13]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+13: [13]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+13: [13]PETSC ERROR: to get more information on the crash.
+13: [13]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+13: [13]PETSC ERROR: Signal received
+13: [13]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+13: [13]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+13: [13]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+13: [13]PETSC ERROR:
+13:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+13: [13]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+13: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 13
+13: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 13)
+00: [0]PETSC ERROR: ------------------------------------------------------------------------
+00: [0]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+00: [0]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+00: [0]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+00: [0]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+00: [0]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+00: [0]PETSC ERROR: to get more information on the crash.
+00: [0]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+00: [0]PETSC ERROR: Signal received
+00: [0]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+00: [0]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+00: [0]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+00: [0]PETSC ERROR: Configure op
+00: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+00: [0]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+00: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 0
+00: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 0)
+05: [5]PETSC ERROR: ------------------------------------------------------------------------
+05: [5]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+05: [5]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+05: [5]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+05: [5]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+05: [5]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+05: [5]PETSC ERROR: to get more information on the crash.
+05: [5]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+05: [5]PETSC ERROR: Signal received
+05: [5]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+05: [5]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+05: [5]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+05: [5]PETSC ERROR: Configure op
+05: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+05: [5]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+05: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 5
+05: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 5)
+09: [9]PETSC ERROR: ------------------------------------------------------------------------
+09: [9]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+09: [9]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+09: [9]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+09: [9]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+09: [9]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+09: [9]PETSC ERROR: to get more information on the crash.
+09: [9]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+09: [9]PETSC ERROR: Signal received
+09: [9]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+09: [9]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+09: [9]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+09: [9]PETSC ERROR: Configure op
+09: tions --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+09: [9]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+09: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 9
+09: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 9)
+15: [15]PETSC ERROR: ------------------------------------------------------------------------
+15: [15]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+15: [15]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+15: [15]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+15: [15]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+15: [15]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+15: [15]PETSC ERROR: to get more information on the crash.
+15: [15]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+15: [15]PETSC ERROR: Signal received
+15: [15]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+15: [15]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+15: [15]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+15: [15]PETSC ERROR:
+15:  Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+15: [15]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+15: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 15
+15: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 15)
+14: [14]PETSC ERROR: 
+14: ------------------------------------------------------------------------
+14: [14]PETSC ERROR: Caught signal number 15 Terminate: Some process (or the batch system) has told this process to end
+14: [14]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
+14: [14]PETSC ERROR: or see http://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
+14: [14]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
+14: [14]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
+14: [14]PETSC ERROR: to get more information on the crash.
+14: [14]PETSC ERROR: --------------------- Error Message --------------------------------------------------------------
+14: [14]PETSC ERROR: Signal received
+14: [14]PETSC ERROR: See http://www.mcs.anl.gov/petsc/documentation/faq.html for trouble shooting.
+14: [14]PETSC ERROR: Petsc Release Version 3.7.6, unknown 
+14: [14]PETSC ERROR: ex2 on a arch-linux2-c-opt named n10-003 by selinger3d Fri Sep  1 22:35:30 2017
+14: [14]PETSC ERROR: Configure options --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 --download-fblaslapack --with-debugging=0 --download-superlu_dist --download-parmetis --download-metis --download-ptscotch --download-hypre
+14: [14]PETSC ERROR: #1 User provided function() line 0 in  unknown file
+14: application called MPI_Abort(MPI_COMM_WORLD, 59) - process 14
+14: In: PMI_Abort(59, application called MPI_Abort(MPI_COMM_WORLD, 59) - process 14)
+srun: forcing job termination
+srun: error: n10-008: tasks 52,59: Exited with exit code 59
+srun: error: n10-004: tasks 23,27,30: Exited with exit code 59
+srun: error: n10-006: tasks 32,34,36,38,40-41,44,46: Exited with exit code 59
+srun: error: n10-003: tasks 0-1,3-12,14-15: Exited with exit code 59
+srun: error: n10-003: tasks 2,13: Killed
+srun: error: n10-006: tasks 33,35,37,39,42-43,45,47: Killed
+srun: error: n10-008: tasks 48-51,53-58,60-63: Killed
+srun: error: n10-004: tasks 16-22,24-26,28-29,31: Killed

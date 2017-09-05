@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+#SBATCH -J ex2_256
+#SBATCH -N 16
+#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-core=1
+#SBATCH --mail-type=BEGIN    # first have to state the type of event to occur 
+#SBATCH --mail-user=<selinge@kth.se>   # and then your email address
+#SBATCH --time=00:05:00
+
+# when srun is used, you need to set:
+export I_MPI_PMI_LIBRARY=/cm/shared/apps/slurm/current/lib/libpmi.so
+
+# load modules
+module load intel-mpi/2017.3 valgrind/3.12.0 python
+
+
+#python ex2.py
+srun -l -N16 -n256 ex2 -m 8192 -n 8192 -ksp_max_it 50 -ksp_view :weak_ex2/n256_512_jacobi_ksp_view.txt -pc_type jacobi
+#srun -l -N16 -n256 ex2 -m 8192 -n 8192 -ksp_max_it 50 -log_view :weak_ex2/n256_512_gamg.txt -pc_type gamg
+#srun -l -N16 -n256 ex2 -m 8192 -n 8192 -ksp_max_it 50 -log_view :weak_ex2/n256_512_hypre.txt -pc_type hypre
+#srun -l -N16 -n256 ex2 -m 2048 -n 2048 -ksp_max_it 50 -log_view :weak_ex2/n256_128_lu.txt -pc_type lu -pc_factor_mat_solver_package superlu_dist
+# or
+#<mpirun -np 32 ex2>

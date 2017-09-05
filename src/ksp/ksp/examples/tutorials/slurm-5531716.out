@@ -1,2 +1,0 @@
-/cm/local/apps/slurm/var/spool/job5531716/slurm_script: line 13: syntax error near unexpected token `newline'
-/cm/local/apps/slurm/var/spool/job5531716/slurm_script: line 13: `<srun -l -N2 -n32 ex2 -log_view :result.txt >'

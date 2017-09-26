@@ -813,7 +813,7 @@ ex208: ex208.o chkopts
 	-${CLINKER} -o ex208 ex208.o ${PETSC_MAT_LIB}
 	${RM} ex208.o
 
-ex209: ex209.o chkopts
+ex209: ex209.o ../../impls/aij/seq/matmatmult.c chkopts
 	-${CLINKER} -o ex209 ex209.o ${PETSC_MAT_LIB}
 	${RM} ex209.o
 

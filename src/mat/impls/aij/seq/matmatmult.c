@@ -185,7 +185,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     memset(a_row_val_dense, 0., am * sizeof(PetscScalar));
     memset(c_row_val_dense, 0., am * sizeof(PetscScalar));
     memset(c_row_cols,      -1, am * sizeof(PetscInt));
-    memset(a_row_group,      0, (am/ROW_GROUP_SIZE+1 * sizeof(PetscInt)));
+    memset(a_row_group,      0, (am/ROW_GROUP_SIZE+1) * sizeof(PetscInt));
 
     for (j=0; j<anzi; j++)
     { 

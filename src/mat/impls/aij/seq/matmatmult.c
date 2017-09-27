@@ -202,7 +202,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
 
     /* Step 5: Do the numerical calculations */
-    ierr = PetscLogEventBegin(step4,0,0,0,0);CHKERRQ(ierr);
+    ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr);
     for (l=0; l<divRoundUp(bm, ROW_GROUP_SIZE); l++)  /* iterate over all groups in a row of A and look for non-empty ones */
     /*for (b_row=0; b_row<bm; b_row++)  */        /* iterate over all rows of B */
     {
@@ -226,7 +226,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
         }
       }
     }
-    ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
+    ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
     /* Sort array */
     PetscLogEventBegin(stepSort,0,0,0,0);
     qsort(c_row_cols_dense, cnzi, sizeof(PetscInt), cmpfunc);

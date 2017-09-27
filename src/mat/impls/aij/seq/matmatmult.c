@@ -190,7 +190,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr);
 
     /* Step 4 */
-    ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
+    ierr = PetscLogEventBegin(step4,0,0,0,0);CHKERRQ(ierr);
     for (j=0; j<anzi; j++)
     { 
       a_row_val_dense[aj_i[j]] = aa_i[j];  /* copy value from row in A to dense vector*/

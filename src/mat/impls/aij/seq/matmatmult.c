@@ -136,11 +136,11 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   PetscInt           *aj_i = a->j;
   PetscScalar        *aa_i = a->a;
 
-  PetscLogEvent step1, step2, step3, step5n, step5, step6, step7, stepSort;
+  PetscLogEvent step1, step2, step3, step4, step5, step6, step7, stepSort;
   PetscLogEventRegister("step1",PETSC_VIEWER_CLASSID,&step1);
   PetscLogEventRegister("step2",PETSC_VIEWER_CLASSID,&step2);
   PetscLogEventRegister("step3",PETSC_VIEWER_CLASSID,&step3);
-  PetscLogEventRegister("step4",PETSC_VIEWER_CLASSID,&step5n);
+  PetscLogEventRegister("step4",PETSC_VIEWER_CLASSID,&step4);
   PetscLogEventRegister("step5",PETSC_VIEWER_CLASSID,&step5);
   PetscLogEventRegister("step6",PETSC_VIEWER_CLASSID,&step6);
   PetscLogEventRegister("step7",PETSC_VIEWER_CLASSID,&step7);
@@ -199,7 +199,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
 
     /* Step 5 */
-    ierr = PetscLogEventBegin(step5n,0,0,0,0);CHKERRQ(ierr);
+    ierr = PetscLogEventBegin(step4,0,0,0,0);CHKERRQ(ierr);
     for (l=0; l<divRoundUp(bm, ROW_GROUP_SIZE); l++)  /* iterate over all groups in a row of A and look for non-empty ones */
     /*for (b_row=0; b_row<bm; b_row++)  */        /* iterate over all rows of B */
     {
@@ -223,7 +223,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
         }
       }
     }
-    ierr = PetscLogEventEnd(step5n,0,0,0,0);CHKERRQ(ierr);
+    ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
     /* Sort array */
     PetscLogEventBegin(stepSort,0,0,0,0);
     qsort(c_row_cols, cnzi, sizeof(PetscInt), cmpfunc);

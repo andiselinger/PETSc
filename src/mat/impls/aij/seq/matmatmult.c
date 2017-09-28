@@ -159,7 +159,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   ci[0] = 0;
   ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
   for (i=0; i<am; i++) {
-    /* Step 3: Initialize row vectors and other arrays */
+    /* Step 3: Initialize the dense row vector for C  */
     ierr = PetscLogEventBegin(step3,0,0,0,0);CHKERRQ(ierr);
     const PetscInt anzi     = ai[i+1] - ai[i]; /* number of nonzeros in this row of A, this is the number of rows of B that we merge */
     PetscInt cnzi           = 0;

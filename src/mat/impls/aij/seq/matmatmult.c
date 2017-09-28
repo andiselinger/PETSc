@@ -112,24 +112,18 @@ PetscInt divRoundUp(PetscInt x, PetscInt y)
 
 PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill,Mat *C)
 {
-#define ROW_GROUP_SIZE   128 /* In order to quickly find non-zero values in a dense row of A,
-                                that row is divided in groups of size ROW_GROUP_SIZE. All
-                                groups that contain non-zero values are later marked with 1.
-                                This is not part of the original Intel algorithm.
-                                To do: optimize value or find better method.  */
   PetscErrorCode     ierr;
   PetscLogDouble     flops=0.0;
   Mat_SeqAIJ         *a  = (Mat_SeqAIJ*)A->data,*b=(Mat_SeqAIJ*)B->data,*c;
   const PetscInt     *ai = a->i,*bi=b->i,*aj=a->j;
   PetscInt           *ci,*cj,*cj_i;
   PetscScalar        *ca, *ca_i;
-  PetscInt           c_maxmem=0,a_maxrownnz=0,a_rownnz /*,row*/;
+  PetscInt           c_maxmem=0,a_maxrownnz=0,a_rownnz, a_col;
   PetscInt           am=A->rmap->N,bn=B->cmap->N,bm=B->rmap->N;
-  PetscInt           i, j, k, l, ndouble = 0;
+  PetscInt           i, j, k, ndouble = 0;
   PetscReal          afill;
-  PetscScalar        *a_row_val_dense, *c_row_val_dense;
+  PetscScalar        *c_row_val_dense;
   PetscInt           *c_row_cols;    /* store the indices with non-zero values of a row in C */
-  PetscInt           *a_row_group;         /* store which groups of a row in A have non-zero values */
   PetscInt           *aj_i = a->j;
   PetscScalar        *aa_i = a->a;
 
@@ -147,8 +141,6 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   ierr = PetscLogEventBegin(step1,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionBegin;
   ierr = PetscMalloc1(am+1,&ci);CHKERRQ(ierr);
-  ierr = PetscMalloc1(am,&a_row_val_dense);CHKERRQ(ierr);
-  ierr = PetscMalloc1(am/ROW_GROUP_SIZE+1,&a_row_group);CHKERRQ(ierr);
   ierr = PetscMalloc1(am,&c_row_val_dense);CHKERRQ(ierr);
   ierr = PetscMalloc1(am,&c_row_cols);CHKERRQ(ierr);
   ierr = PetscLogEventEnd(step1,0,0,0,0);CHKERRQ(ierr);
@@ -180,56 +172,34 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     PetscInt *bj_i;
     PetscScalar *ba_i;
     PetscMemzero(c_row_val_dense, am * sizeof(PetscScalar));
-    PetscMemzero(a_row_val_dense, am * sizeof(PetscScalar));
-    PetscMemzero(a_row_group, (am/ROW_GROUP_SIZE+1) * sizeof(PetscInt)); /* a_row_group will store which groups in a row of A contain non-zero values */
-
     ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr);
-
-    /* Step 4: Copy values to dense row vector of matrix A and store info where  */
-    ierr = PetscLogEventBegin(step4,0,0,0,0);CHKERRQ(ierr);
-    for (j=0; j<anzi; j++)
-    { 
-      a_row_val_dense[aj_i[j]] = aa_i[j];  /* copy value from row in A to dense vector*/
-      a_row_group[ aj_i[j]/ROW_GROUP_SIZE ] = 1;  /* store information that there is a non-zero value in this group of values */
-    }
-    ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
 
     /* Step 5: Do the numerical calculations */
     ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr);
-    for (l=0; l<divRoundUp(bm, ROW_GROUP_SIZE); l++)  /* iterate over all groups in a row of A and look for non-empty ones */
-    /*for (b_row=0; b_row<bm; b_row++)  */        /* iterate over all rows of B */
+    for (a_col=0; a_col<anzi; a_col++)          /* iterate over all non zero values in a row of A */
     {
-      if (a_row_group[l])  /* group is not empty */
-      {
-        for (j = 0; j < ROW_GROUP_SIZE; j++)
-        {
-          PetscInt b_row = l*ROW_GROUP_SIZE + j;
-          if (b_row >= bm) break;
-          if (a_row_val_dense[b_row] != 0.)
+          PetscInt a_col_index = aj_i[a_col];
           {
-            const PetscInt bnzi = bi[b_row+1] - bi[b_row];
-            bj_i = b->j + bi[b_row];
-            ba_i = b->a + bi[b_row];
+            const PetscInt bnzi = bi[a_col_index+1] - bi[a_col_index];
+            bj_i = b->j + bi[a_col_index];
+            ba_i = b->a + bi[a_col_index];
             for (k=0; k<bnzi; ++k)  /* iterate over all non zeros of this row in B */
             {
               if (c_row_val_dense[ bj_i[k] ] == 0.)
-              {
                 insertInArray(bj_i[k] + 1, c_row_cols, &cnzi);
-              }
-              c_row_val_dense[ bj_i[k] ] += a_row_val_dense[b_row] * ba_i[k];
+              c_row_val_dense[ bj_i[k] ] += aa_i[a_col] * ba_i[k];
             }
-          }
-        }
-      }
+          }      
     }
     ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
+
     /* Sort array */
-    PetscLogEventBegin(stepSort,0,0,0,0);
+    /* PetscLogEventBegin(stepSort,0,0,0,0); */
     qsort(c_row_cols, cnzi, sizeof(PetscInt), cmpfunc);
-    PetscLogEventEnd(stepSort,0,0,0,0);
+    /* PetscLogEventEnd(stepSort,0,0,0,0); */
 
     /* Step 6 */
-    ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr);
+    /* ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr); */
     for (k=0; k < cnzi; k++)
     {
       ca_i[k] = c_row_val_dense[ c_row_cols[k] - 1 ];
@@ -241,7 +211,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ca_i += cnzi;
     cj_i += cnzi;
     ci[i+1] = ci[i] + cnzi;
-    ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr);
+    /* ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr); */
   }
 
   /* Step 7 */
@@ -269,8 +239,6 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   (*C)->info.fill_ratio_given  = fill;
   (*C)->info.fill_ratio_needed = afill;
 
-  PetscFree(a_row_val_dense);
-  PetscFree(a_row_group);
   PetscFree(c_row_val_dense);
   PetscFree(c_row_cols);
 

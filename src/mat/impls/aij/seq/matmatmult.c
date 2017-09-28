@@ -95,7 +95,7 @@ void insertInArray(PetscInt val, PetscInt *array, PetscInt *cnzi)
     if(array[i] == val) return;
   }
   array[*cnzi] = val;
-  *cnzi = i+1;  /* store maximum index */
+  (*cnzi)++;  /* store maximum index */
 }
 
 /* needed for qsort */
@@ -103,12 +103,6 @@ PetscInt cmpfunc (const void * a, const void * b)
 {
    return ( *(PetscInt*)a - *(PetscInt*)b );
 }
-
-PetscInt divRoundUp(PetscInt x, PetscInt y)
-{
-  return (x + y - 1) / y;
-}
-
 
 PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill,Mat *C)
 {
@@ -120,7 +114,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   PetscScalar        *ca, *ca_i;
   PetscInt           c_maxmem=0,a_maxrownnz=0,a_rownnz, a_col;
   PetscInt           am=A->rmap->N,bn=B->cmap->N,bm=B->rmap->N;
-  PetscInt           i, j, k, ndouble = 0;
+  PetscInt           i, k, ndouble = 0;
   PetscReal          afill;
   PetscScalar        *c_row_val_dense;
   PetscInt           *c_row_cols;    /* store the indices with non-zero values of a row in C */
@@ -178,18 +172,17 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr);
     for (a_col=0; a_col<anzi; a_col++)          /* iterate over all non zero values in a row of A */
     {
-          PetscInt a_col_index = aj_i[a_col];
-          {
-            const PetscInt bnzi = bi[a_col_index+1] - bi[a_col_index];
-            bj_i = b->j + bi[a_col_index];
-            ba_i = b->a + bi[a_col_index];
-            for (k=0; k<bnzi; ++k)  /* iterate over all non zeros of this row in B */
-            {
-              if (c_row_val_dense[ bj_i[k] ] == 0.)
-                insertInArray(bj_i[k] + 1, c_row_cols, &cnzi);
-              c_row_val_dense[ bj_i[k] ] += aa_i[a_col] * ba_i[k];
-            }
-          }      
+      PetscInt a_col_index = aj_i[a_col];
+      const PetscInt bnzi = bi[a_col_index+1] - bi[a_col_index];
+      flops += 2*bnzi;
+      bj_i = b->j + bi[a_col_index];   /* points to the current row in bj */
+      ba_i = b->a + bi[a_col_index];   /* points to the current row in ba */
+      for (k=0; k<bnzi; ++k)  /* iterate over all non zeros of this row in B */
+      {
+        if (c_row_val_dense[ bj_i[k] ] == 0.)
+          insertInArray(bj_i[k], c_row_cols, &cnzi);
+        c_row_val_dense[ bj_i[k] ] += aa_i[a_col] * ba_i[k];
+      }
     }
     ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
 
@@ -202,8 +195,8 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     /* ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr); */
     for (k=0; k < cnzi; k++)
     {
-      ca_i[k] = c_row_val_dense[ c_row_cols[k] - 1 ];
-      cj_i[k] = c_row_cols[k] - 1;
+      ca_i[k] = c_row_val_dense[ c_row_cols[k]];
+      cj_i[k] = c_row_cols[k];
     }
     /* terminate current row */
     aa_i += anzi;
@@ -211,6 +204,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ca_i += cnzi;
     cj_i += cnzi;
     ci[i+1] = ci[i] + cnzi;
+    flops += cnzi;
     /* ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr); */
   }
 

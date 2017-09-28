@@ -86,21 +86,16 @@ PETSC_INTERN PetscErrorCode MatMatMult_SeqAIJ_SeqAIJ(Mat A,Mat B,MatReuse scall,
   PetscFunctionReturn(0);
 }
 
-/* Insert a value in an array if this value is not present yet.
- * runs in O(n), could be optimized to run in O(log(n)) */
-void insertInArray(PetscInt val, PetscInt length, PetscInt *array, PetscInt *cnzi)
+/* Insert a value in an array if this value is not present yet. */
+void insertInArray(PetscInt val, PetscInt *array, PetscInt *cnzi)
 {
   PetscInt i;
-  for (i = 0; i < length; ++i)
+  for (i = 0; i < *cnzi; ++i)
   {
-    if(array[i] == val) break;
-    if(array[i] == -1)
-    {
-      array[i] = val;
-      if (i+1 > *cnzi) *cnzi = i+1;  /* store maximum index */
-      break; 
-    }
+    if(array[i] == val) return;
   }
+  array[*cnzi] = val;
+  *cnzi = i+1;  /* store maximum index */
 }
 
 /* needed for qsort */
@@ -133,7 +128,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   PetscInt           i, j, k, l, ndouble = 0;
   PetscReal          afill;
   PetscScalar        *a_row_val_dense, *c_row_val_dense;
-  PetscInt           *c_row_cols_dense;    /* store the indices with non-zero values of a row in C */
+  PetscInt           *c_row_cols;    /* store the indices with non-zero values of a row in C */
   PetscInt           *a_row_group;         /* store which groups of a row in A have non-zero values */
   PetscInt           *aj_i = a->j;
   PetscScalar        *aa_i = a->a;
@@ -155,7 +150,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   ierr = PetscMalloc1(am,&a_row_val_dense);CHKERRQ(ierr);
   ierr = PetscMalloc1(am/ROW_GROUP_SIZE+1,&a_row_group);CHKERRQ(ierr);
   ierr = PetscMalloc1(am,&c_row_val_dense);CHKERRQ(ierr);
-  ierr = PetscMalloc1(am,&c_row_cols_dense);CHKERRQ(ierr);
+  ierr = PetscMalloc1(am,&c_row_cols);CHKERRQ(ierr);
   ierr = PetscLogEventEnd(step1,0,0,0,0);CHKERRQ(ierr);
 
   /* Step 2: Determine upper bounds on memory for C */
@@ -187,7 +182,6 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     PetscMemzero(c_row_val_dense, am * sizeof(PetscScalar));
     PetscMemzero(a_row_val_dense, am * sizeof(PetscScalar));
     PetscMemzero(a_row_group, (am/ROW_GROUP_SIZE+1) * sizeof(PetscInt)); /* a_row_group will store which groups in a row of A contain non-zero values */
-    memset(c_row_cols_dense,  -1, am * sizeof(PetscInt));                /* c_row_cols_dense will store the columns of C with non-zero values */
 
     ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr);
 
@@ -218,10 +212,11 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
             ba_i = b->a + bi[b_row];
             for (k=0; k<bnzi; ++k)  /* iterate over all non zeros of this row in B */
             {
-              if(c_row_val_dense[ bj_i[k] ] == 0. )
-                insertInArray(bj_i[k], am, c_row_cols_dense, &cnzi);
+              if (c_row_val_dense[ bj_i[k] ] == 0.)
+              {
+                insertInArray(bj_i[k] + 1, c_row_cols, &cnzi);
+              }
               c_row_val_dense[ bj_i[k] ] += a_row_val_dense[b_row] * ba_i[k];
-
             }
           }
         }
@@ -230,15 +225,15 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
     /* Sort array */
     PetscLogEventBegin(stepSort,0,0,0,0);
-    qsort(c_row_cols_dense, cnzi, sizeof(PetscInt), cmpfunc);
+    qsort(c_row_cols, cnzi, sizeof(PetscInt), cmpfunc);
     PetscLogEventEnd(stepSort,0,0,0,0);
 
     /* Step 6 */
     ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr);
     for (k=0; k < cnzi; k++)
     {
-      ca_i[k] = c_row_val_dense[ c_row_cols_dense[k] ];
-      cj_i[k] = c_row_cols_dense[k];
+      ca_i[k] = c_row_val_dense[ c_row_cols[k] - 1 ];
+      cj_i[k] = c_row_cols[k] - 1;
     }
     /* terminate current row */
     aa_i += anzi;
@@ -277,7 +272,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   PetscFree(a_row_val_dense);
   PetscFree(a_row_group);
   PetscFree(c_row_val_dense);
-  PetscFree(c_row_cols_dense);
+  PetscFree(c_row_cols);
 
   ierr = MatAssemblyBegin(*C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(*C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);

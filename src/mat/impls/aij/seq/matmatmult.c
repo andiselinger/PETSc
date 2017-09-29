@@ -81,12 +81,12 @@ PETSC_INTERN PetscErrorCode MatMatMult_SeqAIJ_SeqAIJ(Mat A,Mat B,MatReuse scall,
     ierr = (*(*C)->ops->matmultnumeric)(A,B,*C);CHKERRQ(ierr);
   }
   /*MatView(A,  PETSC_VIEWER_STDOUT_WORLD); */
-  /*MatView(*C, PETSC_VIEWER_STDOUT_WORLD); */
+  MatView(*C, PETSC_VIEWER_STDOUT_WORLD);
   ierr = PetscLogEventEnd(MAT_MatMultNumeric,A,B,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 
-/* Insert a value in an array if this value is not present yet. */
+/* Insert a value into an array if the value is not present yet. */
 void insertInArray(PetscInt val, PetscInt *array, PetscInt *cnzi)
 {
   PetscInt i;
@@ -94,8 +94,20 @@ void insertInArray(PetscInt val, PetscInt *array, PetscInt *cnzi)
   {
     if(array[i] == val) return;
   }
-  array[*cnzi] = val;
-  (*cnzi)++;  /* store maximum index */
+  array[ (*cnzi)++ ] = val;
+}
+
+
+/* Insert a value into an array if the value is not present yet. */
+void appendToArray(PetscInt val, PetscInt *array, PetscInt *cnzi)
+{
+  /*PetscInt i;
+  for (i = 0; i < *cnzi; ++i)
+  {
+    if(array[i] == val) return;
+  }*/
+  array[ (*cnzi)++ ] = val;
+  //(*cnzi)++;  /* store maximum index */
 }
 
 /* needed for qsort */
@@ -106,41 +118,36 @@ PetscInt cmpfunc (const void * a, const void * b)
 
 PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill,Mat *C)
 {
+#define IDX_FLAGS
   PetscErrorCode     ierr;
   PetscLogDouble     flops=0.0;
-  Mat_SeqAIJ         *a  = (Mat_SeqAIJ*)A->data,*b=(Mat_SeqAIJ*)B->data,*c;
-  const PetscInt     *ai = a->i,*bi=b->i,*aj=a->j;
+  Mat_SeqAIJ         *a  = (Mat_SeqAIJ*)A->data, *b = (Mat_SeqAIJ*)B->data, *c;
+  const PetscInt     *ai = a->i,*bi = b->i, *aj = a->j;
   PetscInt           *ci,*cj,*cj_i;
   PetscScalar        *ca, *ca_i;
-  PetscInt           c_maxmem=0,a_maxrownnz=0,a_rownnz, a_col;
-  PetscInt           am=A->rmap->N,bn=B->cmap->N,bm=B->rmap->N;
+  PetscInt           c_maxmem = 0, a_maxrownnz = 0, a_rownnz, a_col;
+  PetscInt           am = A->rmap->N, bn = B->cmap->N, bm = B->rmap->N;
   PetscInt           i, k, ndouble = 0;
   PetscReal          afill;
   PetscScalar        *c_row_val_dense;
-  PetscInt           *c_row_cols;    /* store the indices with non-zero values of a row in C */
+  PetscBool          *c_row_idx_flags;
   PetscInt           *aj_i = a->j;
   PetscScalar        *aa_i = a->a;
-
+/*
   PetscLogEvent step1, step2, step3, step4, step5, step6, step7, stepSort;
-  PetscLogEventRegister("step1",PETSC_VIEWER_CLASSID,&step1);
-  PetscLogEventRegister("step2",PETSC_VIEWER_CLASSID,&step2);
-  PetscLogEventRegister("step3",PETSC_VIEWER_CLASSID,&step3);
-  PetscLogEventRegister("step4",PETSC_VIEWER_CLASSID,&step4);
-  PetscLogEventRegister("step5",PETSC_VIEWER_CLASSID,&step5);
-  PetscLogEventRegister("step6",PETSC_VIEWER_CLASSID,&step6);
-  PetscLogEventRegister("step7",PETSC_VIEWER_CLASSID,&step7);
-  PetscLogEventRegister("sort",PETSC_VIEWER_CLASSID,&stepSort);
-
-  /* Step 1: Get upper bound on memory required for allocation. */
-  ierr = PetscLogEventBegin(step1,0,0,0,0);CHKERRQ(ierr);
+  PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
+  PetscLogEventRegister("step2", PETSC_VIEWER_CLASSID, &step2);
+  PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
+  PetscLogEventRegister("step4", PETSC_VIEWER_CLASSID, &step4);
+  PetscLogEventRegister("step5", PETSC_VIEWER_CLASSID, &step5);
+  PetscLogEventRegister("step6", PETSC_VIEWER_CLASSID, &step6);
+  PetscLogEventRegister("step7", PETSC_VIEWER_CLASSID, &step7);
+  PetscLogEventRegister("sort" , PETSC_VIEWER_CLASSID, &stepSort);
+*/
   PetscFunctionBegin;
-  ierr = PetscMalloc1(am+1,&ci);CHKERRQ(ierr);
-  ierr = PetscMalloc1(am,&c_row_val_dense);CHKERRQ(ierr);
-  ierr = PetscMalloc1(am,&c_row_cols);CHKERRQ(ierr);
-  ierr = PetscLogEventEnd(step1,0,0,0,0);CHKERRQ(ierr);
 
   /* Step 2: Determine upper bounds on memory for C */
-  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
+  /*ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr); */
   for (i=0; i<am; i++) /* iterate over all rows of A */
   {
     const PetscInt anzi  = ai[i+1] - ai[i]; /* number of nonzeros in this row of A, this is the number of rows of B that we merge */
@@ -150,26 +157,31 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
     a_maxrownnz = PetscMax(a_maxrownnz, a_rownnz);
     c_maxmem += a_rownnz;
   }
-
-  /* Populate pattern for C */
-  ierr  = PetscMalloc1(c_maxmem,&cj);CHKERRQ(ierr);
-  ierr  = PetscMalloc1(c_maxmem,&ca);CHKERRQ(ierr);
+  ierr = PetscMalloc1(am+1, &ci);               CHKERRQ(ierr);
+  ierr = PetscMalloc1(bn, &c_row_val_dense);    CHKERRQ(ierr);
+  ierr = PetscMalloc1(bn, &c_row_idx_flags);    CHKERRQ(ierr);
+  ierr = PetscMalloc1(c_maxmem,&cj);            CHKERRQ(ierr);
+  ierr = PetscMalloc1(c_maxmem,&ca);            CHKERRQ(ierr);
   ca_i = ca;
   cj_i = cj;
   ci[0] = 0;
-  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
+  /*ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr); */
+  PetscMemzero(c_row_val_dense, bn * sizeof(PetscScalar));
+  PetscMemzero(c_row_idx_flags, bn * sizeof(PetscBool));
   for (i=0; i<am; i++) {
     /* Step 3: Initialize the dense row vector for C  */
-    ierr = PetscLogEventBegin(step3,0,0,0,0);CHKERRQ(ierr);
+
+    /*ierr = PetscLogEventBegin(step3,0,0,0,0);CHKERRQ(ierr); */
+
     const PetscInt anzi     = ai[i+1] - ai[i]; /* number of nonzeros in this row of A, this is the number of rows of B that we merge */
     PetscInt cnzi           = 0;
     PetscInt *bj_i;
     PetscScalar *ba_i;
-    PetscMemzero(c_row_val_dense, am * sizeof(PetscScalar));
-    ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr);
+
+    /*ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr); */
 
     /* Step 5: Do the numerical calculations */
-    ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr);
+    /*ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr); */
     for (a_col=0; a_col<anzi; a_col++)          /* iterate over all non zero values in a row of A */
     {
       PetscInt a_col_index = aj_i[a_col];
@@ -179,24 +191,35 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
       ba_i = b->a + bi[a_col_index];   /* points to the current row in ba */
       for (k=0; k<bnzi; ++k)  /* iterate over all non zeros of this row in B */
       {
+#ifdef IDX_FLAGS
+        if (c_row_idx_flags[ bj_i[k] ] == PETSC_FALSE)
+        {
+          appendToArray(bj_i[k], cj_i, &cnzi);
+          c_row_idx_flags[ bj_i[k] ] = PETSC_TRUE;
+        }
+#else
         if (c_row_val_dense[ bj_i[k] ] == 0.)
-          insertInArray(bj_i[k], c_row_cols, &cnzi);
+        {
+          insertInArray(bj_i[k], cj_i, &cnzi);
+        }
+#endif
         c_row_val_dense[ bj_i[k] ] += aa_i[a_col] * ba_i[k];
       }
     }
-    ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
+    //ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
 
     /* Sort array */
-    /* PetscLogEventBegin(stepSort,0,0,0,0); */
-    qsort(c_row_cols, cnzi, sizeof(PetscInt), cmpfunc);
-    /* PetscLogEventEnd(stepSort,0,0,0,0); */
+    //PetscLogEventBegin(stepSort,0,0,0,0);
+    qsort(cj_i, cnzi, sizeof(PetscInt), cmpfunc);
+    //PetscLogEventEnd(stepSort,0,0,0,0);
 
     /* Step 6 */
     /* ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr); */
     for (k=0; k < cnzi; k++)
     {
-      ca_i[k] = c_row_val_dense[ c_row_cols[k]];
-      cj_i[k] = c_row_cols[k];
+      ca_i[k] = c_row_val_dense[cj_i[k]];
+      c_row_val_dense[cj_i[k]] = 0.;
+      c_row_idx_flags[cj_i[k]] = PETSC_FALSE;
     }
     /* terminate current row */
     aa_i += anzi;
@@ -209,7 +232,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   }
 
   /* Step 7 */
-  ierr = PetscLogEventBegin(step7,0,0,0,0);CHKERRQ(ierr);
+  /*ierr = PetscLogEventBegin(step7,0,0,0,0);CHKERRQ(ierr); */
   /* Create the new matrix */
   ierr = MatCreateSeqAIJWithArrays(PetscObjectComm((PetscObject)A),am,bn,ci,cj,NULL,C);CHKERRQ(ierr);
   ierr = MatSetBlockSizesFromMats(*C,A,B);CHKERRQ(ierr);
@@ -234,11 +257,11 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Intel(Mat A,Mat B,PetscReal fill
   (*C)->info.fill_ratio_needed = afill;
 
   PetscFree(c_row_val_dense);
-  PetscFree(c_row_cols);
+  PetscFree(c_row_idx_flags);
 
   ierr = MatAssemblyBegin(*C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(*C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
-  ierr = PetscLogEventEnd(step7,0,0,0,0);CHKERRQ(ierr);
+  /*ierr = PetscLogEventEnd(step7,0,0,0,0);CHKERRQ(ierr); */
   ierr = PetscLogFlops(flops);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }

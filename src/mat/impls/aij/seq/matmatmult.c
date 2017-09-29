@@ -81,7 +81,7 @@ PETSC_INTERN PetscErrorCode MatMatMult_SeqAIJ_SeqAIJ(Mat A,Mat B,MatReuse scall,
     ierr = (*(*C)->ops->matmultnumeric)(A,B,*C);CHKERRQ(ierr);
   }
   /*MatView(A,  PETSC_VIEWER_STDOUT_WORLD); */
-  MatView(*C, PETSC_VIEWER_STDOUT_WORLD);
+  /*MatView(*C, PETSC_VIEWER_STDOUT_WORLD); */
   ierr = PetscLogEventEnd(MAT_MatMultNumeric,A,B,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
@@ -288,7 +288,7 @@ static PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_LLCondensed(Mat A,Mat B,P
   ci[0] = 0;
 
   /* create and initialize a linked list */
-  ierr = PetscTableCreate(bn,bn,&ta);CHKERRQ(ierr); 
+  ierr = PetscTableCreate(bn,bn,&ta);CHKERRQ(ierr);
   MatRowMergeMax_SeqAIJ(b,bm,ta);
   ierr = PetscTableGetCount(ta,&Crmax);CHKERRQ(ierr);
   ierr = PetscTableDestroy(&ta);CHKERRQ(ierr);
@@ -450,7 +450,7 @@ PetscErrorCode MatMatMultNumeric_SeqAIJ_SeqAIJ_Scalable(Mat A,Mat B,Mat C)
     ierr      = PetscMalloc1(ci[cm]+1,&ca);CHKERRQ(ierr);
     c->a      = ca;
     c->free_a = PETSC_TRUE;
-  } 
+  }
 
   /* clean old values in C */
   ierr = PetscMemzero(ca,ci[cm]*sizeof(MatScalar));CHKERRQ(ierr);
@@ -505,7 +505,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Scalable_fast(Mat A,Mat B,PetscR
   ci[0] = 0;
 
   /* create and initialize a linked list */
-  ierr = PetscTableCreate(bn,bn,&ta);CHKERRQ(ierr); 
+  ierr = PetscTableCreate(bn,bn,&ta);CHKERRQ(ierr);
   MatRowMergeMax_SeqAIJ(b,bm,ta);
   ierr = PetscTableGetCount(ta,&Crmax);CHKERRQ(ierr);
   ierr = PetscTableDestroy(&ta);CHKERRQ(ierr);
@@ -611,7 +611,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_Scalable(Mat A,Mat B,PetscReal f
   ci[0] = 0;
 
   /* create and initialize a linked list */
-  ierr = PetscTableCreate(bn,bn,&ta);CHKERRQ(ierr); 
+  ierr = PetscTableCreate(bn,bn,&ta);CHKERRQ(ierr);
   MatRowMergeMax_SeqAIJ(b,bm,ta);
   ierr = PetscTableGetCount(ta,&Crmax);CHKERRQ(ierr);
   ierr = PetscTableDestroy(&ta);CHKERRQ(ierr);
@@ -926,14 +926,14 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge(Mat A,Mat B,PetscReal f
 {
   PetscErrorCode     ierr;
   Mat_SeqAIJ         *a  = (Mat_SeqAIJ*)A->data,*b=(Mat_SeqAIJ*)B->data,*c;
-  const PetscInt     *ai = a->i,*bi=b->i,*aj=a->j,*bj=b->j;
-  PetscInt           *ci,*cj;
+  const PetscInt     *ai = a->i,*bi=b->i,*aj=a->j,*bj=b->j,*inputi,*inputj,*inputcol;
+  PetscInt           *ci,*cj,*outputi,*outputj,worki[8],*workj,workcol[8];
   PetscInt           c_maxmem=0,a_maxrownnz=0,a_rownnz;
   PetscInt           am=A->rmap->N,bn=B->cmap->N,bm=B->rmap->N;
   const PetscInt     *brow_ptr[8],*brow_end[8];
   PetscInt           window[8];
-  PetscInt           window_min,old_window_min,ci_nnz;
-  PetscInt           i,k,ndouble = 0;
+  PetscInt           window_min,old_window_min,ci_nnz,outputi_nnz,output_rows;
+  PetscInt           i,k,ndouble = 0,rowsleft;
   PetscReal          afill;
 
   /* Step 1: Get upper bound on memory required for allocation.
@@ -952,27 +952,34 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge(Mat A,Mat B,PetscReal f
     c_maxmem += a_rownnz;
   }
 
+  if (a_maxrownnz > 8) { /* temporary work area for merging rows */
+    ierr = PetscMalloc1(a_maxrownnz*8,&workj);CHKERRQ(ierr);
+    for (k=0; k<8; ++k) workcol[k] = k;
+  }
+
   /* Step 2: Populate pattern for C */
   ierr  = PetscMalloc1(c_maxmem,&cj);CHKERRQ(ierr);
 
   ci_nnz = 0;
   ci[0] = 0;
+  worki[0] = 0;
   for (i=0; i<am; i++) {
     const PetscInt anzi  = ai[i+1] - ai[i]; /* number of nonzeros in this row of A, this is the number of rows of B that we merge */
     const PetscInt *acol = aj + ai[i]; /* column indices of nonzero entries in this row */
+    rowsleft = anzi;
 
 /* The following macro is used to specialize for small rows in A.
    This helps with compiler unrolling, improving performance substantially. */
 #define MatMatMultSymbolic_RowMergeMacro(ANNZ) \
     window_min = bn; \
     for (k=0; k<ANNZ; ++k) { \
-      brow_ptr[k] = bj + bi[acol[k]]; \
-      brow_end[k] = bj + bi[acol[k]+1]; \
+      brow_ptr[k] = inputj + inputi[inputcol[k]]; \
+      brow_end[k] = inputj + inputi[inputcol[k]+1]; \
       window[k] = (brow_ptr[k] != brow_end[k]) ? *brow_ptr[k] : bn; \
       window_min = PetscMin(window[k], window_min); \
     } \
     while (window_min < bn) { \
-      cj[ci_nnz++] = window_min; \
+      outputj[outputi_nnz++] = window_min; \
       /* advance front and compute new minimum */ \
       old_window_min = window_min; \
       window_min = bn; \
@@ -983,25 +990,67 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge(Mat A,Mat B,PetscReal f
         } \
         window_min = PetscMin(window[k], window_min); \
       } \
+    } \
+    inputcol += ANNZ; \
+    rowsleft -= ANNZ;
+
+    inputi = bi;
+    inputj = bj;
+    inputcol = acol;
+    outputi_nnz = 0;
+    output_rows = 0;
+    if (anzi > 64) {
+      SETERRQ(PETSC_COMM_SELF,PETSC_ERR_SUP,"MatMatMult with more than 64 nonzeros per row in left factor not supported!");
+    } else if (anzi > 8) { /* merge to temporary buffer */
+      outputi = worki;
+      outputj = workj;
+    } else { /* merge straight to C */
+      outputi = ci;
+      outputj = cj + ci_nnz;
     }
 
-    switch (anzi) {
-    case 0: break;
-    case 1: brow_ptr[0] = bj + bi[acol[k]];
-            brow_end[0] = bj + bi[acol[k]+1];
-            for (; brow_ptr[0] != brow_end[0]; ++brow_ptr[0]) cj[ci_nnz++] = *brow_ptr[0]; /* copy row in b to c */
-            break;
-    case 2: MatMatMultSymbolic_RowMergeMacro(2); break;
-    case 3: MatMatMultSymbolic_RowMergeMacro(3); break;
-    case 4: MatMatMultSymbolic_RowMergeMacro(4); break;
-    case 5: MatMatMultSymbolic_RowMergeMacro(5); break;
-    case 6: MatMatMultSymbolic_RowMergeMacro(6); break;
-    case 7: MatMatMultSymbolic_RowMergeMacro(7); break;
-    case 8: MatMatMultSymbolic_RowMergeMacro(8); break;
-    default: SETERRQ(PETSC_COMM_SELF,PETSC_ERR_SUP,"MatMatMult with more than 8 nonzeros per row in left factor not supported!");
+    while (rowsleft) {
+      switch (rowsleft) {
+      case 1: brow_ptr[0] = inputj + inputi[inputcol[0]];
+              brow_end[0] = inputj + inputi[inputcol[0]+1];
+              for (; brow_ptr[0] != brow_end[0]; ++brow_ptr[0]) outputj[outputi_nnz++] = *brow_ptr[0]; /* copy row in b over */
+              rowsleft -= 1;
+              break;
+      case 2: MatMatMultSymbolic_RowMergeMacro(2); break;
+      case 3: MatMatMultSymbolic_RowMergeMacro(3); break;
+      case 4: MatMatMultSymbolic_RowMergeMacro(4); break;
+      case 5: MatMatMultSymbolic_RowMergeMacro(5); break;
+      case 6: MatMatMultSymbolic_RowMergeMacro(6); break;
+      case 7: MatMatMultSymbolic_RowMergeMacro(7); break;
+      default: MatMatMultSymbolic_RowMergeMacro(8); break;
+      }
+      ++output_rows;
+      if (anzi > 8) worki[output_rows] = outputi_nnz;
     }
+
+    if (anzi > 8) { /* merge from work array to C */
+      inputi = worki;
+      inputj = workj;
+      inputcol = workcol;
+      outputi = ci;
+      outputj = cj + ci_nnz;
+      outputi_nnz = 0;
+
+      switch (output_rows) {
+      case 2: MatMatMultSymbolic_RowMergeMacro(2); break;
+      case 3: MatMatMultSymbolic_RowMergeMacro(3); break;
+      case 4: MatMatMultSymbolic_RowMergeMacro(4); break;
+      case 5: MatMatMultSymbolic_RowMergeMacro(5); break;
+      case 6: MatMatMultSymbolic_RowMergeMacro(6); break;
+      case 7: MatMatMultSymbolic_RowMergeMacro(7); break;
+      case 8: MatMatMultSymbolic_RowMergeMacro(8); break;
+      default: SETERRQ(PETSC_COMM_SELF,PETSC_ERR_SUP,"MatMatMult logic error: Not merging 2-8 rows from work array to C!");
+      }
+    }
+#undef MatMatMultSymbolic_RowMergeMacro
 
     /* terminate current row */
+    ci_nnz += outputi_nnz;
     ci[i+1] = ci_nnz;
   }
 
@@ -1035,6 +1084,7 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge(Mat A,Mat B,PetscReal f
     ierr = PetscInfo((*C),"Empty matrix product\n");CHKERRQ(ierr);
   }
 #endif
+  ierr = PetscFree(workj);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 
@@ -1045,15 +1095,15 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge2(Mat A,Mat B,PetscReal 
   PetscErrorCode     ierr;
   PetscLogDouble flops=0.0;
   Mat_SeqAIJ         *a  = (Mat_SeqAIJ*)A->data,*b=(Mat_SeqAIJ*)B->data,*c;
-  const PetscInt     *ai = a->i,*bi=b->i,*aj=a->j,*bj=b->j;
-  PetscInt           *ci,*cj;
-  PetscScalar        *aa=a->a,*ba=b->a,*ca,valtmp;
+  const PetscInt     *ai = a->i,*bi=b->i,*aj=a->j,*bj=b->j,*inputi,*inputj,*inputcol;
+  PetscInt           *ci,*cj,*outputi,*outputj,worki[8],*workj,workcol[8];
+  PetscScalar        *aa=a->a,*ba=b->a,*ca,valtmp,*workval,*inputval,*outputval,allones[8];
   PetscInt           brow_offset[8],brow_offset_end[8];
   PetscInt           c_maxmem=0,a_maxrownnz=0,a_rownnz;
   PetscInt           am=A->rmap->N,bn=B->cmap->N,bm=B->rmap->N;
   PetscInt           window[8];
-  PetscInt           window_min,old_window_min,c_nnz;
-  PetscInt           i,k,ndouble = 0;
+  PetscInt           window_min,old_window_min,ci_nnz,outputi_nnz,output_rows;
+  PetscInt           i,k,ndouble = 0,rowsleft;
   PetscReal          afill;
 
   /* Step 1: Get upper bound on memory required for allocation.
@@ -1072,67 +1122,129 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge2(Mat A,Mat B,PetscReal 
     c_maxmem += a_rownnz;
   }
 
+  if (a_maxrownnz > 8) { /* temporary work area for merging rows */
+    ierr = PetscMalloc1(a_maxrownnz*8,&workj);CHKERRQ(ierr);
+    ierr = PetscMalloc1(a_maxrownnz*8,&workval);CHKERRQ(ierr);
+    for (k=0; k<8; ++k) {
+      workcol[k] = k;
+      allones[k] = (PetscScalar)1.0;
+    }
+  }
+
   /* Step 2: Populate pattern for C */
   ierr  = PetscMalloc1(c_maxmem,&cj);CHKERRQ(ierr);
   ierr  = PetscMalloc1(c_maxmem,&ca);CHKERRQ(ierr);
 
-  c_nnz = 0;
+  ci_nnz = 0;
   ci[0] = 0;
+  worki[0] = 0;
   for (i=0; i<am; i++) {
     const PetscInt anzi     = ai[i+1] - ai[i]; /* number of nonzeros in this row of A, this is the number of rows of B that we merge */
     const PetscInt *acol    = aj + ai[i];      /* column indices of nonzero entries in this row */
     const PetscScalar *aval = aa + ai[i];      /* nonzero values of nonzero entries in this row */
+
+    rowsleft = anzi;
 
 /* The following macro is used to specialize for small rows in A.
    This helps with compiler unrolling, improving performance substantially. */
 #define MatMatMultSymbolic_RowMerge2Macro(ANNZ) \
     window_min = bn; \
     for (k=0; k<ANNZ; ++k) { \
-      brow_offset[k]     = bi[acol[k]]; \
-      brow_offset_end[k] = bi[acol[k]+1]; \
-      window[k] = (brow_offset[k] != brow_offset_end[k]) ? bj[brow_offset[k]] : bn; \
+      brow_offset[k]     = inputi[inputcol[k]]; \
+      brow_offset_end[k] = inputi[inputcol[k]+1]; \
+      window[k] = (brow_offset[k] != brow_offset_end[k]) ? inputj[brow_offset[k]] : bn; \
       window_min = PetscMin(window[k], window_min); \
       flops += 2 * (brow_offset_end[k] - brow_offset[k]); \
     } \
     while (window_min < bn) { \
-      cj[c_nnz] = window_min; \
+      outputj[outputi_nnz] = window_min; \
       valtmp = 0; \
-      for (k=0; k<ANNZ; ++k) if (window[k] == window_min) valtmp += aval[k] * ba[brow_offset[k]]; \
-      ca[c_nnz++] = valtmp; \
+      for (k=0; k<ANNZ; ++k) if (window[k] == window_min) valtmp += aval[k] * inputval[brow_offset[k]]; \
+      outputval[outputi_nnz++] = valtmp; \
       /* advance front and compute new minimum */ \
       old_window_min = window_min; \
       window_min = bn; \
       for (k=0; k<ANNZ; ++k) { \
         if (window[k] == old_window_min) { \
           brow_offset[k]++; \
-          window[k] = (brow_offset[k] != brow_offset_end[k]) ? bj[brow_offset[k]] : bn; \
+          window[k] = (brow_offset[k] != brow_offset_end[k]) ? inputj[brow_offset[k]] : bn; \
         } \
         window_min = PetscMin(window[k], window_min); \
       } \
+    } \
+    inputcol += ANNZ; \
+    aval     += ANNZ; \
+    rowsleft -= ANNZ;
+
+    inputi = bi;
+    inputj = bj;
+    inputval = ba;
+    inputcol = acol;
+    outputi_nnz = 0;
+    output_rows = 0;
+    if (anzi > 64) {
+      SETERRQ(PETSC_COMM_SELF,PETSC_ERR_SUP,"MatMatMult with more than 64 nonzeros per row in left factor not supported!");
+    } else if (anzi > 8) { /* merge to temporary buffer */
+      outputi = worki;
+      outputj = workj;
+      outputval = workval;
+    } else { /* merge straight to C */
+      outputi = ci;
+      outputj = cj + ci_nnz;
+      outputval = ca + ci_nnz;
     }
 
-    switch (anzi) {
-    case 0: break;
-    case 1: brow_offset[0]     = bi[acol[0]];
-            brow_offset_end[0] = bi[acol[0]+1];
-            flops += brow_offset_end[0] - brow_offset[0];
-            for (; brow_offset[0] != brow_offset_end[0]; ++brow_offset[0]) {
-              ca[c_nnz++] = aval[0] * ba[brow_offset[0]]; /* copy row in b to c */
-            }
-            break;
-    case 2: MatMatMultSymbolic_RowMerge2Macro(2); break;
-    case 3: MatMatMultSymbolic_RowMerge2Macro(3); break;
-    case 4: MatMatMultSymbolic_RowMerge2Macro(4); break;
-    case 5: MatMatMultSymbolic_RowMerge2Macro(5); break;
-    case 6: MatMatMultSymbolic_RowMerge2Macro(6); break;
-    case 7: MatMatMultSymbolic_RowMerge2Macro(7); break;
-    case 8: MatMatMultSymbolic_RowMerge2Macro(8); break;
-    default: SETERRQ(PETSC_COMM_SELF,PETSC_ERR_SUP,"MatMatMult with more than 8 nonzeros per row in left factor not supported!");
+    while (rowsleft) {
+      switch (rowsleft) {
+      case 1: brow_offset[0]     = inputi[inputcol[0]];
+              brow_offset_end[0] = inputi[inputcol[0]+1];
+              flops += brow_offset_end[0] - brow_offset[0];
+              for (; brow_offset[0] != brow_offset_end[0]; ++brow_offset[0]) {
+                outputj[outputi_nnz]     = inputj[brow_offset[0]];
+                outputval[outputi_nnz++] = aval[0] * inputval[brow_offset[0]]; /* copy row in b to c */
+              }
+              rowsleft -= 1;
+              break;
+      case 2: MatMatMultSymbolic_RowMerge2Macro(2); break;
+      case 3: MatMatMultSymbolic_RowMerge2Macro(3); break;
+      case 4: MatMatMultSymbolic_RowMerge2Macro(4); break;
+      case 5: MatMatMultSymbolic_RowMerge2Macro(5); break;
+      case 6: MatMatMultSymbolic_RowMerge2Macro(6); break;
+      case 7: MatMatMultSymbolic_RowMerge2Macro(7); break;
+      default: MatMatMultSymbolic_RowMerge2Macro(8); break;
+      }
+
+      ++output_rows;
+      if (anzi > 8) worki[output_rows] = outputi_nnz;
     }
-#undef MatMatMultSymbolic_RowMergeMacro
+
+    if (anzi > 8) { /* merge from work array to C */
+      inputi    = worki;
+      inputj    = workj;
+      inputval  = workval;
+      inputcol  = workcol;
+      outputi   = ci;
+      outputj   = cj + ci_nnz;
+      outputval = ca + ci_nnz;
+      outputi_nnz = 0;
+      aval      = allones;
+
+      switch (output_rows) {
+      case 2: MatMatMultSymbolic_RowMerge2Macro(2); break;
+      case 3: MatMatMultSymbolic_RowMerge2Macro(3); break;
+      case 4: MatMatMultSymbolic_RowMerge2Macro(4); break;
+      case 5: MatMatMultSymbolic_RowMerge2Macro(5); break;
+      case 6: MatMatMultSymbolic_RowMerge2Macro(6); break;
+      case 7: MatMatMultSymbolic_RowMerge2Macro(7); break;
+      case 8: MatMatMultSymbolic_RowMerge2Macro(8); break;
+      default: SETERRQ(PETSC_COMM_SELF,PETSC_ERR_SUP,"MatMatMult logic error: Not merging 2-8 rows from work array to C!");
+      }
+#undef MatMatMultSymbolic_RowMerge2Macro
+    }
 
     /* terminate current row */
-    ci[i+1] = c_nnz;
+    ci_nnz += outputi_nnz;
+    ci[i+1] = ci_nnz;
   }
 
   /* Step 3: Create the new symbolic matrix */
@@ -1169,6 +1281,8 @@ PetscErrorCode MatMatMultSymbolic_SeqAIJ_SeqAIJ_RowMerge2(Mat A,Mat B,PetscReal 
   ierr = MatAssemblyBegin(*C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(*C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = PetscLogFlops(flops);CHKERRQ(ierr);
+  ierr = PetscFree(workj);CHKERRQ(ierr);
+  ierr = PetscFree(workval);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 
@@ -1280,8 +1394,8 @@ PetscErrorCode MatMatTransposeMult_SeqAIJ_SeqAIJ(Mat A,Mat B,MatReuse scall,Pets
 PetscErrorCode MatDestroy_SeqAIJ_MatMatMultTrans(Mat A)
 {
   PetscErrorCode      ierr;
-  Mat_SeqAIJ          *a=(Mat_SeqAIJ*)A->data; 
-  Mat_MatMatTransMult *abt=a->abt; 
+  Mat_SeqAIJ          *a=(Mat_SeqAIJ*)A->data;
+  Mat_MatMatTransMult *abt=a->abt;
 
   PetscFunctionBegin;
   ierr = (abt->destroy)(A);CHKERRQ(ierr);
@@ -1298,7 +1412,7 @@ PetscErrorCode MatMatTransposeMultSymbolic_SeqAIJ_SeqAIJ(Mat A,Mat B,PetscReal f
   Mat                 Bt;
   PetscInt            *bti,*btj;
   Mat_MatMatTransMult *abt;
-  Mat_SeqAIJ          *c; 
+  Mat_SeqAIJ          *c;
 
   PetscFunctionBegin;
   /* create symbolic Bt */
@@ -1584,10 +1698,10 @@ PetscErrorCode MatMatMultNumeric_SeqAIJ_SeqDense(Mat A,Mat B,Mat C)
       aj = a->j + a->i[i];
       aa = a->a + a->i[i];
       for (j=0; j<n; j++) {
-        aatmp = aa[j]; ajtmp = aj[j]; 
-        r1 += aatmp*b1[ajtmp]; 
-        r2 += aatmp*b2[ajtmp]; 
-        r3 += aatmp*b3[ajtmp]; 
+        aatmp = aa[j]; ajtmp = aj[j];
+        r1 += aatmp*b1[ajtmp];
+        r2 += aatmp*b2[ajtmp];
+        r3 += aatmp*b3[ajtmp];
         r4 += aatmp*b4[ajtmp];
       }
       c1[i] = r1;
@@ -1605,11 +1719,11 @@ PetscErrorCode MatMatMultNumeric_SeqAIJ_SeqDense(Mat A,Mat B,Mat C)
       aj = a->j + a->i[i];
       aa = a->a + a->i[i];
       for (j=0; j<n; j++) {
-        r1 += aa[j]*b1[aj[j]]; 
+        r1 += aa[j]*b1[aj[j]];
       }
       c1[i] = r1;
     }
-    b1 += bm; 
+    b1 += bm;
     c1 += am;
   }
   ierr = PetscLogFlops(cn*(2.0*a->nz));CHKERRQ(ierr);
@@ -1764,14 +1878,14 @@ PetscErrorCode MatTransColoringApplyDenToSp_SeqAIJ(MatTransposeColoring matcolor
   Mat_SeqAIJ     *csp = (Mat_SeqAIJ*)Csp->data;
   PetscScalar    *ca_den,*ca_den_ptr,*ca=csp->a;
   PetscInt       k,l,m=Cden->rmap->n,ncolors=matcoloring->ncolors;
-  PetscInt       brows=matcoloring->brows,*den2sp=matcoloring->den2sp; 
+  PetscInt       brows=matcoloring->brows,*den2sp=matcoloring->den2sp;
   PetscInt       nrows,*row,*idx;
   PetscInt       *rows=matcoloring->rows,*colorforrow=matcoloring->colorforrow;
 
   PetscFunctionBegin;
   ierr   = MatDenseGetArray(Cden,&ca_den);CHKERRQ(ierr);
 
-  if (brows > 0) { 
+  if (brows > 0) {
     PetscInt *lstart,row_end,row_start;
     lstart = matcoloring->lstart;
     ierr = PetscMemzero(lstart,ncolors*sizeof(PetscInt));CHKERRQ(ierr);
@@ -1808,7 +1922,7 @@ PetscErrorCode MatTransColoringApplyDenToSp_SeqAIJ(MatTransposeColoring matcolor
       }
       ca_den_ptr += m;
     }
-  } 
+  }
 
   ierr = MatDenseRestoreArray(Cden,&ca_den);CHKERRQ(ierr);
 #if defined(PETSC_USE_INFO)
@@ -1867,7 +1981,7 @@ PetscErrorCode MatTransposeColoringCreate_SeqAIJ(Mat mat,ISColoring iscoloring,M
   columns_i      = columns;
 
   /* get column-wise storage of mat */
-  ierr = MatGetColumnIJ_SeqAIJ_Color(mat,0,PETSC_FALSE,PETSC_FALSE,&ncols,&ci,&cj,&spidx,NULL);CHKERRQ(ierr); 
+  ierr = MatGetColumnIJ_SeqAIJ_Color(mat,0,PETSC_FALSE,PETSC_FALSE,&ncols,&ci,&cj,&spidx,NULL);CHKERRQ(ierr);
 
   cm   = c->m;
   ierr = PetscMalloc1(cm+1,&rowhit);CHKERRQ(ierr);
@@ -1910,11 +2024,11 @@ PetscErrorCode MatTransposeColoringCreate_SeqAIJ(Mat mat,ISColoring iscoloring,M
         den2sp_i[nrows] = idxhit[j];
         nrows++;
       }
-    } 
+    }
     den2sp_i += nrows;
 
     ierr    = ISRestoreIndices(isa[i],&is);CHKERRQ(ierr);
-    rows_i += nrows; 
+    rows_i += nrows;
   }
   ierr = MatRestoreColumnIJ_SeqAIJ_Color(mat,0,PETSC_FALSE,PETSC_FALSE,&ncols,&ci,&cj,&spidx,NULL);CHKERRQ(ierr);
   ierr = PetscFree(rowhit);CHKERRQ(ierr);

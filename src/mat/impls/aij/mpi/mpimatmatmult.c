@@ -64,7 +64,7 @@ PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,
       break;
 #if defined(PETSC_HAVE_HYPRE)
     case 2:
-      ierr = MatMatMultSymbolic_AIJ_AIJ_wHYPRE(A,B,fill,C);CHKERRQ(ierr);
+      //ierr = MatMatMultSymbolic_AIJ_AIJ_wHYPRE(A,B,fill,C);CHKERRQ(ierr);
       break;
 #endif
     default:
@@ -398,7 +398,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   PetscInt           *pi_loc,*pj_loc,*pi_oth,*pj_oth,*dnz,*onz;
   PetscInt           *adi=ad->i,*adj=ad->j,*aoi=ao->i,*aoj=ao->j,rstart=A->rmap->rstart;
   PetscInt           *lnk,i,pnz,row,*adpi,*adpj, *api, *aopi, *aopj, *adpJ, *aopJ, *apJ,*Jptr,adpnz, aopnz, nspacedouble=0,j,nzi,
-                     *test1, *test2, *apj, size_apj = 0, apnz = 0;
+                     *apj, size_apj = 0, apnz = 0;
   PetscInt           am=A->rmap->n,pN=P->cmap->N,pn=P->cmap->n,pm=P->rmap->n;
   PetscInt           cstart;
   PetscBT            lnkbt;
@@ -436,17 +436,19 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     pi_oth = NULL; pj_oth = NULL;
   }
 
-  /* first, compute symbolic AP = A_loc*P = A_diag*P_loc + A_off*P_oth */
+  /* Allocate memory for the i arrays of the matrices A*P, A_diag*P and A_offd * P */
   /*-------------------------------------------------------------------*/
+  ierr      = PetscMalloc1(am+2,&api);CHKERRQ(ierr);
   ierr      = PetscMalloc1(am+2,&adpi);CHKERRQ(ierr);
   ierr      = PetscMalloc1(am+2,&aopi);CHKERRQ(ierr);
-  ierr      = PetscMalloc1(am+2,&api);CHKERRQ(ierr);
+
 
 
   adpi[0]    = 0;
   aopi[0]    = 0;
   ptap->api = api;
-  /* create and initialize a linked list */
+
+  /* create and initialize a linked list, will be used for both A_diag*P and A_offd*P */
   ierr = PetscLLCondensedCreate(pN,pN,&lnk,&lnkbt);CHKERRQ(ierr);
   ierr = MatPreallocateInitialize(comm,am,pn,dnz,onz);CHKERRQ(ierr);
 
@@ -463,7 +465,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     /* diagonal portion of A */
     nzi = adi[i+1] - adi[i];
     for (j=0; j<nzi; j++) {
-      //printf("d %i \n", *adj);
       row  = *adj++;
       pnz  = pi_loc[row+1] - pi_loc[row];
       Jptr = pj_loc + pi_loc[row];
@@ -520,7 +521,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
     /* Copy data into free space, then initialize lnk */
     ierr = PetscLLCondensedClean(pN,aopnz,current_space->array,lnk,lnkbt);CHKERRQ(ierr);
-
     current_space->array           += aopnz;
     current_space->local_used      += aopnz;
     current_space->local_remaining -= aopnz;
@@ -530,17 +530,13 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ///////////////////////////////////////////
 
 
-
-
-  /* Allocate space for apj, initialize apj, and */
-  /* destroy list of free space and other temporary array(s) */
+  /* Allocate space for apj, adpj, aopj */
+  /* destroy lists of free space and other temporary array(s) */
 
   ierr = PetscMalloc1(adpi[am]+1,&adpj);CHKERRQ(ierr);
   ierr = PetscMalloc1(aopi[am]+1,&aopj);CHKERRQ(ierr);
 
-
-
-  // merge the two arrays aopj and adpj (from Ao*P and Ad*P)
+  /* Merge the arrays aopj and adpj (from Ao*P and Ad*P) */
   ierr = PetscMalloc1(aopi[am] + adpi[am], &ptap->apj);CHKERRQ(ierr);
   apj  = ptap->apj;
 
@@ -555,15 +551,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   for (i = 0; i < am; i++) {
     aopnz = aopi[i+1] - aopi[i];
     adpnz = adpi[i+1] - adpi[i];
-    for(i1 = 0; i1 < adpnz; i1++) {
-      if(rank == 0) printf("adpJ[%i] = %i\n", i1, adpJ[i1]);
-    }
     merge_vectors(aopnz, aopJ, adpnz, adpJ, &apnz, apJ);
-    if(rank == 0) printf("apnz = %i\n", apnz);
 
-    for(i1 = 0; i1 < apnz; i1++) {
-      if(rank == 0) printf("apJ[%i] = %i\n", i1, apJ[i1]);
-    }
     ierr = MatPreallocateSet(i+rstart,apnz,apJ,dnz,onz);CHKERRQ(ierr);
     aopJ += aopnz;
     adpJ += adpnz;
@@ -596,7 +585,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   }
   ierr = MatAssemblyBegin(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
-
 
 
   ptap->destroy        = Cmpi->ops->destroy;

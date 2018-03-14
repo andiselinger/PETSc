@@ -5,9 +5,17 @@ static char help[] = "Test MatMatMult() and MatPtAP() for AIJ matrices.\n\n";
 int main(int argc,char **argv)
 {
   Mat            A,B,C,D;
-  PetscScalar    a[] ={0.,0.,0.,5.,0.,4.,0.,3.,0.,2.,0.,0.,1.,0.,0.,6.};
-  PetscInt       i[]={0,1,2,3};
-  PetscInt       j[]={0,1,2,3};
+  PetscScalar    a[] ={
+0.,0.,0.,5.,0.,4.,
+0.,3.,0.,2.,0.,0.,
+-3.,0.,0.,10.,0.,0.,
+0.,0.,0.,-1.,0.,-2.,
+0.,0.,9.,0.,0.,-4.,
+0.,8.,0.,6.,0.,-5.,
+
+};
+  PetscInt       i[]={0,1,2,3,4,5};
+  PetscInt       j[]={0,1,2,3,4,5};
   PetscInt       k;
   PetscScalar    none=-1.;
   PetscErrorCode ierr;
@@ -24,7 +32,7 @@ int main(int argc,char **argv)
   ierr = MPI_Comm_rank(PETSC_COMM_WORLD,&rank);CHKERRQ(ierr);
 
   ierr = MatCreate(PETSC_COMM_WORLD,&A);CHKERRQ(ierr);
-  ierr = MatSetSizes(A,PETSC_DECIDE,PETSC_DECIDE,4,4);CHKERRQ(ierr);
+  ierr = MatSetSizes(A,PETSC_DECIDE,PETSC_DECIDE,6,6);CHKERRQ(ierr);
   ierr = MatSetType(A,MATAIJ);CHKERRQ(ierr);
   ierr = MatSetFromOptions(A);CHKERRQ(ierr);
   ierr = MatSetUp(A);CHKERRQ(ierr);
@@ -32,7 +40,7 @@ int main(int argc,char **argv)
 
   if (!rank) {
     //for (k=0; k<4; k++) {
-      ierr = MatSetValues(A,4,i,4,j,a,ADD_VALUES);CHKERRQ(ierr);
+      ierr = MatSetValues(A,6,i,6,j,a,ADD_VALUES);CHKERRQ(ierr);
     //}
   }
   ierr = MatAssemblyBegin(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);

@@ -74,7 +74,7 @@ PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,
     ierr = PetscLogEventEnd(MAT_MatMultSymbolic,A,B,0,0);CHKERRQ(ierr);
   }
   ierr = PetscLogEventBegin(MAT_MatMultNumeric,A,B,0,0);CHKERRQ(ierr);
-  ierr = (*(*C)->ops->matmultnumeric)(A,B,*C);CHKERRQ(ierr);
+  //ierr = (*(*C)->ops->matmultnumeric)(A,B,*C);CHKERRQ(ierr);
   ierr = PetscLogEventEnd(MAT_MatMultNumeric,A,B,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
@@ -391,21 +391,24 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   Mat_PtAPMPI        *ptap;
   PetscFreeSpaceList free_space_diag=NULL, free_space_offd=NULL,current_space=NULL;
   Mat_MPIAIJ         *a        =(Mat_MPIAIJ*)A->data;
-  Mat_SeqAIJ         *ad       =(Mat_SeqAIJ*)(a->A)->data,*ao=(Mat_SeqAIJ*)(a->B)->data,*p_loc,*p_oth;
+  Mat_SeqAIJ         *ad       =(Mat_SeqAIJ*)(a->A)->data,*ao=(Mat_SeqAIJ*)(a->B)->data,*p_loc,*p_oth, *po_loc;
+  Mat_MPIAIJ         *p        =(Mat_MPIAIJ*)P->data;
+  Mat_SeqAIJ         *pd       =(Mat_SeqAIJ*)(p->A),*po=(Mat_SeqAIJ*)(a->B)->data;
   Mat_MPIAIJ         *c;
-  Mat_SeqAIJ         *cd, *co;
+  Mat_SeqAIJ         *cd, *co, *ad_pd_seq;
   PetscInt           cdnz,conz,k,k0,k1;
-  PetscInt           *pi_loc,*pj_loc,*pi_oth,*pj_oth,*dnz,*onz;
+  PetscInt           *pi_loc,*pj_loc,*pi_oth,*pj_oth,*dnz,*onz, *poi_loc, *poj_loc;
   PetscInt           *adi=ad->i,*adj=ad->j,*aoi=ao->i,*aoj=ao->j,rstart=A->rmap->rstart;
   PetscInt           *lnk,i,pnz,row,*adpi,*adpj, *api, *aopi, *aopj, *adpJ, *aopJ, *apJ,*Jptr,adpnz, aopnz, nspacedouble=0,j,nzi,
-                     *apj, size_apj = 0, apnz = 0;
+                     *apj, size_apj = 0, apnz = 0, *ad_pd_seqi, *ad_pd_seqj;
   PetscInt           am=A->rmap->n,pN=P->cmap->N,pn=P->cmap->n,pm=P->rmap->n;
   PetscInt           cstart;
   PetscBT            lnkbt;
-  PetscScalar        *apa, *cda, *coa, *ca;
+  PetscScalar        *apa, *cda, *coa, *ca, *ad_pd_seqa;
   PetscReal          afill;
   PetscMPIInt        rank;
   int                i1 = 0, i2 = 0, i3 = 0;
+  Mat                ad_pd, aop_loc;
 
 
   PetscFunctionBegin;
@@ -425,6 +428,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
   p_loc  = (Mat_SeqAIJ*)(ptap->P_loc)->data;
   pi_loc = p_loc->i; pj_loc = p_loc->j;
+  po_loc  = (Mat_SeqAIJ*)(p->B)->data;
+  poi_loc = po_loc->i; poj_loc = po_loc->j;
 
   //
   // Set p_oth if there is more than 1 processor
@@ -442,8 +447,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr      = PetscMalloc1(am+2,&adpi);CHKERRQ(ierr);
   ierr      = PetscMalloc1(am+2,&aopi);CHKERRQ(ierr);
 
-
-
   adpi[0]    = 0;
   aopi[0]    = 0;
   ptap->api = api;
@@ -453,6 +456,24 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = MatPreallocateInitialize(comm,am,pn,dnz,onz);CHKERRQ(ierr);
 
 
+   MatMatMultSymbolic_SeqAIJ_SeqAIJ(a->A, p->A, fill, &ad_pd);
+
+   ad_pd_seq                         = (Mat_SeqAIJ*)((ad_pd)->data);
+
+   ad_pd_seqi = ad_pd_seq->i; ad_pd_seqj = ad_pd_seq->j;
+   ierr      = PetscMalloc1(ad_pd_seqi[am]+2,&ad_pd_seq->a);CHKERRQ(ierr);
+   ad_pd_seqa = ad_pd_seq->a;
+
+   /*
+   for(i = 0; i < ad_pdloc_seqi[am]; i++) {
+     printf("cj[%i]: %i\n", i, ad_pdloc_seqj[i]);
+     printf("ca[%i]: %f\n", i, ad_pdloc_seqa[i]);
+   }
+*/
+
+
+   ierr = MatView(p->A, PETSC_VIEWER_STDOUT_SELF);CHKERRQ(ierr);
+   //ierr = MatView(ad_pd, PETSC_VIEWER_STDOUT_SELF);CHKERRQ(ierr);
 
   //////////////////////////////////////
   /* Symbolic calc of the A_diag * P_loc */

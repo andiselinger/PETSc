@@ -5,7 +5,7 @@ static char help[] = "Test MatMatMult() and MatPtAP() for AIJ matrices.\n\n";
 int main(int argc,char **argv)
 {
   Mat            A,B,C,D;
-  PetscScalar    a[] ={0.,0.,0.,5.,0.,1.,0.,1.,0.,1.,0.,0.,2.,0.,0.,1.};
+  PetscScalar    a[] ={0.,0.,0.,5.,0.,4.,0.,3.,0.,2.,0.,0.,1.,0.,0.,6.};
   PetscInt       i[]={0,1,2,3};
   PetscInt       j[]={0,1,2,3};
   PetscInt       k;

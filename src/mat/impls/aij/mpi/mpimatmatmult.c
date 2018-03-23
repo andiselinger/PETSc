@@ -402,7 +402,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   PetscInt           *pi_loc,*pj_loc,*pi_oth,*pj_oth,*dnz,*onz, *poi_loc, *poj_loc, *poJ_loc;
   PetscInt           *adi=ad->i,*adj=ad->j,*aoi=ao->i,*aoj=ao->j,rstart=A->rmap->rstart;
   PetscInt           *lnk,i,pnz,row,*adpoi,*adpoj, *api, *aopi, *aopj, *adpoJ, *aopJ, *apJ,*Jptr, aopnz, nspacedouble=0,j,nzi,
-                     *apj, *adpj, size_apj = 0, adpnz = 0, apnz_1, *adpdi, *adpdj, *adpdJ, *poff_i, *poff_j, *j_temp, *adpJ;
+                     *apj, *adpj, size_apj = 0, adpnz = 0, apnz, *adpdi, *adpdj, *adpdJ, *poff_i, *poff_j, *j_temp, *adpJ;
   PetscInt           am=A->rmap->n,pN=P->cmap->N,pn=P->cmap->n,pm=P->rmap->n, p_rowstart, p_rowend;
   PetscBT            lnkbt;
   PetscScalar        *apa, *cda, *coa, *ca, *ad_pd_seqa, *ad_po_seqa;
@@ -571,11 +571,11 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = PetscMalloc1(aopi[am]+1,&aopj);CHKERRQ(ierr);
 
   /* Merge the arrays aopj and adpj (from Ao*P and Ad*P) */
-  ierr = PetscMalloc1(aopi[am] + adpoi[am], &ptap->apj);CHKERRQ(ierr);
+  ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &ptap->apj);CHKERRQ(ierr);
 
-  //////////
-  ierr = PetscMalloc1(aopi[am] + adpoi[am]+50, &adpj);CHKERRQ(ierr);
-  ///////////
+
+  ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &adpj);CHKERRQ(ierr);
+
   apj  = ptap->apj;
 
 
@@ -604,11 +604,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     adpdnz = adpdi[i+1] - adpdi[i];
     for(i1 = 0; i1 < adpdnz; i1++) {
       adpdJ[i1] += p_rowstart;
-
     }
     // merge adpd and adpo
-    //MergeArrays(adpdnz, j_temp, adponz, adpoJ, &adpnz, adpJ);
-
     printf("%i: i = %i, adponz: %i    adpdnz: %i \n", rank, i, adponz, adpdnz);
     for(i1 = 0; i1 < adpdnz; i1++) {
       printf("%i: adpdJ[%i]: %i\n", rank, i1, adpdJ[i1]);
@@ -617,22 +614,21 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
       printf("%i: adpoJ[%i]: %i\n", rank, i1, adpoJ[i1]);
     }
     MergeArrays(adponz, adpoJ, adpdnz, adpdJ, &adpnz, adpJ);
-    for(i1 = 0; i1 < adpnz; i1++) {
-      printf("%i: adpJ[%i] = %i\n", rank, i1, adpJ[i1]);
+    MergeArrays( adpnz,  adpJ,  aopnz,  aopJ,  &apnz,  apJ);
+
+    for(i1 = 0; i1 < apnz; i1++) {
+      printf("%i: apJ[%i]: %i\n", rank, i1, apJ[i1]);
     }
 
-    //MergeArrays(apnz_1, apj_1, adpdnz, ad_pd_seqj, &apnz, apJ);
-    //ierr = MatPreallocateSet(i+rstart,adpnz,adpJ,dnz,onz);CHKERRQ(ierr);
+    ierr = MatPreallocateSet(i+rstart, apnz, apJ, dnz, onz); CHKERRQ(ierr);
     //ierr = MatPreallocateSet(i+rstart,adponz,adpoJ,dnz,onz);CHKERRQ(ierr);
 
     aopJ += aopnz;
     adpoJ += adponz;
     adpdJ += adpdnz;
     adpJ += adpnz;
-    //apJ += apnz;
-    adpj += adpnz;
-    //size_apj += adpnz;
-    api[i+1] = api[i] + adpnz;
+    apJ += apnz;
+    api[i+1] = api[i] + apnz;
   }
 
   ierr = PetscLLDestroy(lnk,lnkbt);CHKERRQ(ierr);
@@ -653,11 +649,9 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = MatPreallocateFinalize(dnz,onz);CHKERRQ(ierr);
   for (i=0; i<am; i++) {
     row  = i + rstart;
-    adpnz = api[i+1] - api[i];
-    //adponz = adpoi[i+1] - adpoi[i];
-    //ierr = MatSetValues(Cmpi,1,&row,adpnz,adpj,apa,INSERT_VALUES);CHKERRQ(ierr);
-    //ierr = MatSetValues(Cmpi,1,&row,adponz,adpoj,apa,INSERT_VALUES);CHKERRQ(ierr);
-    apj += adpnz;
+    apnz = api[i+1] - api[i];
+    ierr = MatSetValues(Cmpi, 1, &row, apnz, apj, apa, INSERT_VALUES);CHKERRQ(ierr);
+    apj += apnz;
   }
   ierr = MatAssemblyBegin(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);

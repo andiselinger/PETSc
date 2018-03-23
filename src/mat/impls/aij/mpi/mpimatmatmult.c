@@ -566,7 +566,10 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   apJ = apj; // still empty
 
 
-  // MERGE j-arrays of aop, adpo, adpd to get A*P
+  //////////////////////////////////////////////////////////////
+  // MERGE j-arrays of A_off * P, A_diag * P_loc_off, and
+  // A_diag * P_loc_diag to get A*P
+  //////////////////////////////////////////////////////////////
   for (i = 0; i < am; i++) {
     aopnz  =  aopi[i+1] -  aopi[i];
     adponz = adpoi[i+1] - adpoi[i];

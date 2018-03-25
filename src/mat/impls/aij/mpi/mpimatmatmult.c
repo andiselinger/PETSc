@@ -375,6 +375,96 @@ void MergeArrays(PetscInt size1, PetscInt *vec1, PetscInt size2, PetscInt *vec2,
 
 
 
+
+void Merge3SortedArrays(PetscInt size1,  PetscInt *in1,
+                        PetscInt size2,  PetscInt *in2,
+                        PetscInt size3,  PetscInt *in3,
+                        PetscInt *size4, PetscInt *out)
+{
+        int i = 0, j = 0, k = 0, l = 0;
+
+        // Traverse all three arrays
+        while (i<size1 && j <size2 && k < size3)
+        {
+            if (in1[i] < in2[j] && in1[i] < in3[k])
+                out[l++] = in1[i++];
+            else if(in2[j] < in1[i] && in2[j] < in3[k])
+                out[l++] = in2[j++];
+            else if(in3[k] < in1[i] && in3[k] < in2[j])
+                out[l++] = in3[k++];
+
+            else if(in1[i] == in2[j] && in1[i] < in3[k])
+            {
+                out[l++] = in1[i];
+                i++, j++;
+            }
+            else if(in1[i] == in3[k] && in1[i] < in2[j])
+            {
+                out[l++] = in1[i];
+                i++, k++;
+            }
+            else if(in3[k] == in2[j] && in2[j] < in1[i])
+            {
+                out[l++] = in2[j];
+                k++, j++;
+            }
+            else if(in1[i] == in2[j] && in1[i] == in3[k])
+            {
+                out[l++] = in1[i];
+                i++, j++, k++;
+            }
+        }
+
+        // Traverse two remaining arrays
+        while (i<size1 && j <size2)
+        {
+            if (in1[i] < in2[j])
+                out[l++] = in1[i++];
+            else if(in1[i] > in2[j])
+                out[l++] = in2[j++];
+            else {
+                out[l++] = in1[i];
+                i++, j++;
+            }
+        }
+
+        while (i<size1 && k <size3)
+        {
+            if (in1[i] < in3[k])
+                out[l++] = in1[i++];
+            else if(in1[i] > in3[k])
+                out[l++] = in3[k++];
+            else {
+                out[l++] = in1[i];
+                i++, k++;
+            }
+        }
+
+        while (k<size3 && j <size2)
+        {
+            if (in3[k] < in2[j])
+                out[l++] = in3[k++];
+            else if(in3[k] > in2[j])
+                out[l++] = in2[j++];
+            else {
+                out[l++] = in3[k];
+                k++, j++;
+            }
+        }
+
+        // Traverse one remaining array
+        while (i < size1)
+            out[l++] = in1[i++];
+        while (j < size2)
+            out[l++] = in2[j++];
+        while (k < size3)
+            out[l++] = in3[k++];
+
+        *size4 = l;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
@@ -415,7 +505,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = PetscObjectGetComm((PetscObject)A,&comm);CHKERRQ(ierr);
   ierr = MPI_Comm_size(comm,&size);CHKERRQ(ierr);
   MPI_Comm_rank(comm, &rank);
-
   ierr = MatGetOwnershipRange(P, &p_rowstart, &p_rowend); CHKERRQ(ierr);
 
   /* create struct Mat_PtAPMPI and attached it to C later */
@@ -440,7 +529,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     pi_oth = NULL; pj_oth = NULL;
   }
 
-  /* Allocate memory for the i arrays of the matrices A*P, A_diag*P and A_offd * P */
+  /* Allocate memory for the i arrays of the matrices A*P, A_diag*P_off and A_offd * P */
   /*-------------------------------------------------------------------*/
   ierr      = PetscMalloc1(am+2,&api);CHKERRQ(ierr);
   ierr      = PetscMalloc1(am+2,&adpoi);CHKERRQ(ierr);
@@ -566,6 +655,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   apJ = apj; // still empty
 
 
+
   //////////////////////////////////////////////////////////////
   // MERGE j-arrays of A_off * P, A_diag * P_loc_off, and
   // A_diag * P_loc_diag to get A*P
@@ -580,10 +670,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
       adpdJ[i1] += p_rowstart;
     }
 
-    // Merge j-arrays of A_diag * P_loc_off and A_diag * P_loc_diag -> result = A_diag * P_loc
-    MergeArrays(adponz, adpoJ, adpdnz, adpdJ, &adpnz, adpJ);
-    // Merge j-arrays of A_diag * P_loc and A_off * P_oth
-    MergeArrays( adpnz,  adpJ,  aopnz,  aopJ,  &apnz,  apJ);
+    // Merge j-arrays of A_diag * P_loc_off and A_diag * P_loc_diag and A_off * P_oth
+    Merge3SortedArrays(adponz, adpoJ, adpdnz, adpdJ, aopnz, aopJ, &apnz, apJ);
 
     ierr = MatPreallocateSet(i+rstart, apnz, apJ, dnz, onz); CHKERRQ(ierr);
 

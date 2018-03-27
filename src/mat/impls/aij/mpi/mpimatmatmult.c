@@ -18,13 +18,10 @@ PETSC_INTERN PetscErrorCode MatMatMultSymbolic_AIJ_AIJ_wHYPRE(Mat,Mat,PetscReal,
 PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,PetscReal fill, Mat *C)
 {
   PetscErrorCode ierr;
-#if defined(PETSC_HAVE_HYPRE)
+
   const char     *algTypes[3] = {"new","nonscalable","hypre"};
   PetscInt       nalg = 3;
-#else
-  const char     *algTypes[2] = {"new","nonscalable"};
-  PetscInt       nalg = 2;
-#endif
+
   PetscInt       alg = 1; /* set nonscalable algorithm as default */
   MPI_Comm       comm;
   PetscBool      flg;
@@ -60,15 +57,15 @@ PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,
     ierr = PetscLogEventBegin(MAT_MatMultSymbolic,A,B,0,0);CHKERRQ(ierr);
     switch (alg) {
     case 1:
-      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(A,B,fill,C);CHKERRQ(ierr);
+      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ(A,B,fill,C);CHKERRQ(ierr);
       break;
-#if defined(PETSC_HAVE_HYPRE)
+
     case 2:
-      //ierr = MatMatMultSymbolic_AIJ_AIJ_wHYPRE(A,B,fill,C);CHKERRQ(ierr);
+      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_nonscalable(A,B,fill,C);CHKERRQ(ierr);
       break;
-#endif
+
     default:
-      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(A,B,fill,C);CHKERRQ(ierr);
+      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_nonscalable(A,B,fill,C);CHKERRQ(ierr);
       break;
     }
     ierr = PetscLogEventEnd(MAT_MatMultSymbolic,A,B,0,0);CHKERRQ(ierr);
@@ -209,6 +206,13 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_nonscalable(Mat A,Mat P,PetscRea
   PetscScalar        *apa;
   PetscReal          afill;
 
+
+  PetscLogEvent step1, step2, step3;
+  PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
+  PetscLogEventRegister("step2_nonscalable", PETSC_VIEWER_CLASSID, &step2);
+  PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
+  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
+
   PetscFunctionBegin;
   ierr = PetscObjectGetComm((PetscObject)A,&comm);CHKERRQ(ierr);
   ierr = MPI_Comm_size(comm,&size);CHKERRQ(ierr);
@@ -340,6 +344,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_nonscalable(Mat A,Mat P,PetscRea
     ierr = PetscInfo(Cmpi,"Empty matrix product\n");CHKERRQ(ierr);
   }
 #endif
+  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 
@@ -501,7 +506,15 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   Mat                adpd;
 
 
+  PetscLogEvent step1, step2, step3;
+  PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
+  PetscLogEventRegister("step2", PETSC_VIEWER_CLASSID, &step2);
+  PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
+  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
+
   PetscFunctionBegin;
+
+
   ierr = PetscObjectGetComm((PetscObject)A,&comm);CHKERRQ(ierr);
   ierr = MPI_Comm_size(comm,&size);CHKERRQ(ierr);
   MPI_Comm_rank(comm, &rank);
@@ -553,6 +566,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
    //ierr      = PetscMalloc1(adpdi[am]+2,&adpd_seq->a);CHKERRQ(ierr);
    //ierr      = PetscMalloc1(poff_i[am]+2,&p_off->a);CHKERRQ(ierr);
+   ierr      = PetscMalloc1(pn+2,&j_temp);CHKERRQ(ierr);
 
   //////////////////////////////////////
   /* Symbolic calc of the A_diag * p_loc_off */
@@ -579,6 +593,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     adpoi[i+1] = adpoi[i] + adponz;
 
     /* if free space is not available, double the total space in the list */
+
     if (current_space->local_remaining<adponz) {
       ierr = PetscFreeSpaceGet(PetscIntSumTruncate(adponz,current_space->total_array_size),&current_space);CHKERRQ(ierr);
       nspacedouble++;
@@ -591,7 +606,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     current_space->local_used      += adponz;
     current_space->local_remaining -= adponz;
   }
-
 
   //////////////////////////////////////
   /* Symbolic calc of A_off * P_oth */
@@ -653,7 +667,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   adpJ = adpj;
   apj  = ptap->apj;
   apJ = apj; // still empty
-
 
 
   //////////////////////////////////////////////////////////////
@@ -734,6 +747,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     ierr = PetscInfo(Cmpi,"Empty matrix product\n");CHKERRQ(ierr);
   }
 #endif
+  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -996,6 +1010,14 @@ PetscErrorCode MatMatMultNumeric_MPIAIJ_MPIAIJ(Mat A,Mat P,Mat C)
   MPI_Comm       comm;
   PetscMPIInt    size;
 
+
+  PetscLogEvent step1, step2, step3;
+  PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
+  PetscLogEventRegister("step2_scalable", PETSC_VIEWER_CLASSID, &step2);
+  PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
+  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
+
+
   PetscFunctionBegin;
   ierr = PetscObjectGetComm((PetscObject)A,&comm);CHKERRQ(ierr);
   ierr = MPI_Comm_size(comm,&size);CHKERRQ(ierr);
@@ -1093,9 +1115,9 @@ PetscErrorCode MatMatMultNumeric_MPIAIJ_MPIAIJ(Mat A,Mat P,Mat C)
       k++;
     }
   }
-  printf("1111111111111Scalable Numeric\n");
   ierr = MatAssemblyBegin(C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(C,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 

@@ -57,7 +57,7 @@ PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,
     ierr = PetscLogEventBegin(MAT_MatMultSymbolic,A,B,0,0);CHKERRQ(ierr);
     switch (alg) {
     case 1:
-      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ(A,B,fill,C);CHKERRQ(ierr);
+      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(A,B,fill,C);CHKERRQ(ierr);
       break;
 
     case 2:
@@ -566,7 +566,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
    //ierr      = PetscMalloc1(adpdi[am]+2,&adpd_seq->a);CHKERRQ(ierr);
    //ierr      = PetscMalloc1(poff_i[am]+2,&p_off->a);CHKERRQ(ierr);
-   ierr      = PetscMalloc1(pn+2,&j_temp);CHKERRQ(ierr);
+   ierr      = PetscMalloc1(pn+1,&j_temp);CHKERRQ(ierr);
 
   //////////////////////////////////////
   /* Symbolic calc of the A_diag * p_loc_off */
@@ -652,7 +652,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &ptap->apj);CHKERRQ(ierr);
   ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &adpj);CHKERRQ(ierr);
   ierr = PetscMalloc1(poff_i[am] + adpdi[am] + adpoi[am], &adpoj);CHKERRQ(ierr);
-  ierr = PetscMalloc1(poff_i[am] + adpdi[am], &j_temp);CHKERRQ(ierr);
 
 
 
@@ -739,6 +738,9 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   Cmpi->info.fill_ratio_given  = fill;
   Cmpi->info.fill_ratio_needed = afill;
 
+
+
+
 #if defined(PETSC_USE_INFO)
   if (api[am]) {
     ierr = PetscInfo3(Cmpi,"Reallocs %D; Fill ratio: given %g needed %g.\n",nspacedouble,(double)fill,(double)afill);CHKERRQ(ierr);
@@ -747,6 +749,16 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     ierr = PetscInfo(Cmpi,"Empty matrix product\n");CHKERRQ(ierr);
   }
 #endif
+
+  PetscFree(j_temp);
+  PetscFree(adpoj);
+  PetscFree(adpj);
+  //PetscFree(ptap->apj);
+  PetscFree(aopj);
+  //PetscFree(api);
+  PetscFree(adpoi);
+  PetscFree(aopi);
+
   ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }

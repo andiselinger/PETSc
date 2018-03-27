@@ -407,6 +407,11 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   PetscMPIInt        rank;
   int                i1 = 0, i2 = 0, i3 = 0;
 
+  PetscLogEvent step1, step2, step3;
+  PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
+  PetscLogEventRegister("step2_new", PETSC_VIEWER_CLASSID, &step2);
+  PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
+  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
 
   PetscFunctionBegin;
   ierr = PetscObjectGetComm((PetscObject)A,&comm);CHKERRQ(ierr);
@@ -654,6 +659,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     ierr = PetscInfo(Cmpi,"Empty matrix product\n");CHKERRQ(ierr);
   }
 #endif
+  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 /////////////////////////////////////////////////////////////////////////////////////////

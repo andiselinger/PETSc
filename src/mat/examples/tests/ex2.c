@@ -35,7 +35,7 @@ int main(int argc,char **argv)
   ierr = MatSetFromOptions(A);CHKERRQ(ierr);
 
 
-  if (1) {      /* 13-point stencil, 3D */
+  if (0) {      /* 13-point stencil, 3D */
     ierr = MatMPIAIJSetPreallocation(A,13,NULL,13,NULL);CHKERRQ(ierr);
     ierr = MatSeqAIJSetPreallocation(A,13,NULL);CHKERRQ(ierr);
     ierr = MatGetOwnershipRange(A,&Istart,&Iend);CHKERRQ(ierr);
@@ -56,6 +56,66 @@ int main(int argc,char **argv)
       v = 12.0; ierr = MatSetValues(A,1,&Ii,1,&Ii,&v,INSERT_VALUES);CHKERRQ(ierr);
     }
   }
+if (1) {
+ ierr = MatMPIAIJSetPreallocation(A,27,NULL,27,NULL);CHKERRQ(ierr);
+    ierr = MatSeqAIJSetPreallocation(A,27,NULL);CHKERRQ(ierr);
+    ierr = MatGetOwnershipRange(A,&Istart,&Iend);CHKERRQ(ierr);
+    for (Ii=Istart; Ii<Iend; Ii++) {
+      v = -1.0; k = Ii / (m*n); j = (Ii - k * m * n) / m; i = (Ii - k * m * n - j * m);
+      if (k>0) {
+        if (j>0) {
+          if (i>0)   {J = global_index(i-1,j-1,k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j-1,k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j-1,k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+        {
+          if (i>0)   {J = global_index(i-1,j,  k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j,  k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j,  k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+        if (j<n-1) {
+          if (i>0)   {J = global_index(i-1,j+1,k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j+1,k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j+1,k-1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+      }
+      {
+        if (j>0) {
+          if (i>0)   {J = global_index(i-1,j-1,k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j-1,k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j-1,k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+        {
+          if (i>0)   {J = global_index(i-1,j,  k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j,  k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j,  k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+        if (j<n-1) {
+          if (i>0)   {J = global_index(i-1,j+1,k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j+1,k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j+1,k  ,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+      }
+      if (k<o-1) {
+        if (j>0) {
+          if (i>0)   {J = global_index(i-1,j-1,k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j-1,k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j-1,k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+        {
+          if (i>0)   {J = global_index(i-1,j,  k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j,  k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j,  k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+        if (j<n-1) {
+          if (i>0)   {J = global_index(i-1,j+1,k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+                      J = global_index(i,  j+1,k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);
+          if (i<m-1) {J = global_index(i+1,j+1,k+1,m,n); ierr = MatSetValues(A,1,&Ii,1,&J,&v,INSERT_VALUES);CHKERRQ(ierr);}
+        }
+      }
+      v = 26.0; ierr = MatSetValues(A,1,&Ii,1,&Ii,&v,INSERT_VALUES);CHKERRQ(ierr);
+    }
+  }
   ierr = MatAssemblyBegin(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatSetOptionsPrefix(A,"A_");CHKERRQ(ierr);
@@ -66,15 +126,15 @@ int main(int argc,char **argv)
   ierr = MatTranspose(A,MAT_INITIAL_MATRIX,&B);CHKERRQ(ierr);      /* B = A^T */
   ierr = MatSetOptionsPrefix(B,"B_");CHKERRQ(ierr);
   ierr = MatMatMult(A,B,MAT_INITIAL_MATRIX,fill,&C);CHKERRQ(ierr); /* C = A*B */
-  ierr = MatDestroy(&C);CHKERRQ(ierr);
+#if 0  
+ierr = MatDestroy(&C);CHKERRQ(ierr);
   ierr = MatMatMult(A,B,MAT_INITIAL_MATRIX,fill,&C);CHKERRQ(ierr); /* C = A*B */
   ierr = MatDestroy(&C);CHKERRQ(ierr);
   ierr = MatMatMult(A,B,MAT_INITIAL_MATRIX,fill,&C);CHKERRQ(ierr); /* C = A*B */
   ierr = MatDestroy(&C);CHKERRQ(ierr);
   ierr = MatMatMult(A,B,MAT_INITIAL_MATRIX,fill,&C);CHKERRQ(ierr); /* C = A*B */
   ierr = MatDestroy(&C);CHKERRQ(ierr);
-  ierr = MatMatMult(A,B,MAT_INITIAL_MATRIX,fill,&C);CHKERRQ(ierr); /* C = A*B */
-  ierr = MatSetOptionsPrefix(C,"C_");CHKERRQ(ierr);
+#endif
   //ierr = MatView(C,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
   if (!rank) {ierr = PetscPrintf(PETSC_COMM_SELF,"\n");CHKERRQ(ierr);}
 

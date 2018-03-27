@@ -506,11 +506,16 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   Mat                adpd;
 
 
-  PetscLogEvent step1, step2, step3;
+  PetscLogEvent step1, step2, step_all, step3, step4, step5, step6;
   PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
   PetscLogEventRegister("step2", PETSC_VIEWER_CLASSID, &step2);
   PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
-  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
+  PetscLogEventRegister("step4", PETSC_VIEWER_CLASSID, &step4);
+  PetscLogEventRegister("step5", PETSC_VIEWER_CLASSID, &step5);
+  PetscLogEventRegister("step6", PETSC_VIEWER_CLASSID, &step6);
+  PetscLogEventRegister("step_all", PETSC_VIEWER_CLASSID, &step_all);
+
+  ierr = PetscLogEventBegin(step_all,0,0,0,0);CHKERRQ(ierr);
 
   PetscFunctionBegin;
 
@@ -556,7 +561,10 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = PetscLLCondensedCreate(pN,pN,&lnk,&lnkbt);CHKERRQ(ierr);
   ierr = MatPreallocateInitialize(comm,am,pn,dnz,onz);CHKERRQ(ierr);
 
-   MatMatMultSymbolic_SeqAIJ_SeqAIJ(a->A, p->A, fill, &adpd);
+  ierr = PetscLogEventBegin(step1,0,0,0,0);CHKERRQ(ierr);
+  MatMatMultSymbolic_SeqAIJ_SeqAIJ(a->A, p->A, fill, &adpd);
+  ierr = PetscLogEventEnd(step1,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
 
    adpd_seq = (Mat_SeqAIJ*)((adpd)->data);
    p_off = (Mat_SeqAIJ*)((p->B)->data);
@@ -571,7 +579,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   //////////////////////////////////////
   /* Symbolic calc of the A_diag * p_loc_off */
   //////////////////////////////////////
-  /* Initial FreeSpace size is fill*(nnz(A)+nnz(P)) */
+
+   /* Initial FreeSpace size is fill*(nnz(A)+nnz(P)) */
   ierr = PetscFreeSpaceGet(PetscRealIntMultTruncate(fill,PetscIntSumTruncate(adi[am],PetscIntSumTruncate(aoi[am],pi_loc[pm]))),&free_space_diag);CHKERRQ(ierr);
   current_space = free_space_diag;
 
@@ -606,11 +615,13 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     current_space->local_used      += adponz;
     current_space->local_remaining -= adponz;
   }
+  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
 
   //////////////////////////////////////
   /* Symbolic calc of A_off * P_oth */
   ///////////////////////////////////////////
 
+  ierr = PetscLogEventBegin(step3,0,0,0,0);CHKERRQ(ierr);
   /* Initial FreeSpace size is fill*(nnz(A)+nnz(P)) */
   ierr = PetscFreeSpaceGet(PetscRealIntMultTruncate(fill,PetscIntSumTruncate(adi[am],PetscIntSumTruncate(aoi[am],pi_loc[pm]))),&free_space_offd);CHKERRQ(ierr);
   current_space = free_space_offd;
@@ -640,6 +651,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     current_space->local_used      += aopnz;
     current_space->local_remaining -= aopnz;
   }
+  ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step4,0,0,0,0);CHKERRQ(ierr);
 
   ///////////////////////////////////////////
   ///////////////////////////////////////////
@@ -695,8 +708,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     api[i+1] = api[i] + apnz;
   }
 
-
-
+  ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr);
   /* malloc apa to store dense row A[i,:]*P */
   ierr = PetscCalloc1(pN,&apa);CHKERRQ(ierr);
 
@@ -717,6 +730,9 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     ierr = MatSetValues(Cmpi, 1, &row, apnz, apj, apa, INSERT_VALUES);CHKERRQ(ierr);
     apj += apnz;
   }
+  ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr);
+
   ierr = MatAssemblyBegin(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
 
@@ -739,8 +755,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   Cmpi->info.fill_ratio_needed = afill;
 
 
-
-
 #if defined(PETSC_USE_INFO)
   if (api[am]) {
     ierr = PetscInfo3(Cmpi,"Reallocs %D; Fill ratio: given %g needed %g.\n",nspacedouble,(double)fill,(double)afill);CHKERRQ(ierr);
@@ -759,7 +773,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   PetscFree(adpoi);
   PetscFree(aopi);
 
-  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step_all,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
 /////////////////////////////////////////////////////////////////////////////////////////

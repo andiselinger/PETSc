@@ -623,37 +623,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   //////////////////////////////////////
   /* Symbolic calc of A_off * P_oth */
   ///////////////////////////////////////////
-#if 0
-  /* Initial FreeSpace size is fill*(nnz(A)+nnz(P)) */
-  ierr = PetscFreeSpaceGet(PetscRealIntMultTruncate(fill,PetscIntSumTruncate(adi[am],PetscIntSumTruncate(aoi[am],pi_loc[pm]))),&free_space_offd);CHKERRQ(ierr);
-  current_space = free_space_offd;
 
-  for (i=0; i<am; i++) {
-
-    /* A_off * P_oth */
-    nzi = aoi[i+1] - aoi[i];
-    for (j=0; j<nzi; j++) {
-      row  = *aoj++;
-      pnz  = pi_oth[row+1] - pi_oth[row];
-      Jptr = pj_oth + pi_oth[row];
-      ierr = PetscLLCondensedAddSorted(pnz,Jptr,lnk,lnkbt);CHKERRQ(ierr);
-    }
-    aopnz     = lnk[0];
-    aopi[i+1] = aopi[i] + aopnz;
-
-    /* if free space is not available, double the total space in the list */
-    if (current_space->local_remaining<aopnz) {
-      ierr = PetscFreeSpaceGet(PetscIntSumTruncate(aopnz,current_space->total_array_size),&current_space);CHKERRQ(ierr);
-      nspacedouble++;
-    }
-
-    /* Copy data into free space, then initialize lnk */
-    ierr = PetscLLCondensedClean(pN,aopnz,current_space->array,lnk,lnkbt);CHKERRQ(ierr);
-    current_space->array           += aopnz;
-    current_space->local_used      += aopnz;
-    current_space->local_remaining -= aopnz;
-  }
-#endif
   MatMatMultSymbolic_SeqAIJ_SeqAIJ(a->B, ptap->P_oth, fill, &aopoth);
   aopoth_seq = (Mat_SeqAIJ*)((aopoth)->data);
   aopothi = aopoth_seq->i; aopothj = aopoth_seq->j;
@@ -667,24 +637,17 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   /* Allocate space for apj, adpj, aopj, ... */
   /* destroy lists of free space and other temporary array(s) */
 
-  //ierr = PetscMalloc1(aopothi[am]+1,&aopj);CHKERRQ(ierr);
+
   ierr = PetscMalloc1(aopothi[am] + adpoi[am] + adpdi[am], &ptap->apj);CHKERRQ(ierr);
-  ierr = PetscMalloc1(aopothi[am] + adpoi[am] + adpdi[am], &adpj);CHKERRQ(ierr);
-  ierr = PetscMalloc1(poff_i[am] + adpdi[am] + adpoi[am], &adpoj);CHKERRQ(ierr);
-  ierr = PetscMalloc1(poff_i[am] + adpdi[am], &j_temp);CHKERRQ(ierr);
-
-
+  ierr = PetscMalloc1(adpoi[am], &adpoj);CHKERRQ(ierr);
 
   // Copy from linked list to j-array
   ierr = PetscFreeSpaceContiguous(&free_space_diag,adpoj);CHKERRQ(ierr);
-  //ierr = PetscFreeSpaceContiguous(&free_space_offd,aopj);CHKERRQ(ierr);
   ierr = PetscLLDestroy(lnk,lnkbt);CHKERRQ(ierr);
 
   adpoJ = adpoj;
   adpdJ = adpdj;
-  //aopJ = aopj;
   aopJ = aopothj;
-  adpJ = adpj;
   apj  = ptap->apj;
   apJ = apj; // still empty
   ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
@@ -712,7 +675,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     aopJ += aopnz;
     adpoJ += adponz;
     adpdJ += adpdnz;
-    adpJ += adpnz;
     apJ += apnz;
     api[i+1] = api[i] + apnz;
   }
@@ -775,11 +737,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   PetscFree(j_temp);
   PetscFree(adpoj);
   PetscFree(adpj);
-  //PetscFree(ptap->apj);
-  //PetscFree(aopj);
-  //PetscFree(api);
   PetscFree(adpoi);
-  //PetscFree(aopi);
 
   ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr);
   ierr = PetscLogEventEnd(step_all,0,0,0,0);CHKERRQ(ierr);

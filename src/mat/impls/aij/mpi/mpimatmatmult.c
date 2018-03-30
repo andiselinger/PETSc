@@ -57,7 +57,7 @@ PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,
     ierr = PetscLogEventBegin(MAT_MatMultSymbolic,A,B,0,0);CHKERRQ(ierr);
     switch (alg) {
     case 1:
-      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(A,B,fill,C);CHKERRQ(ierr);
+      ierr = MatMatMultSymbolic_MPIAIJ_MPIAIJ_nonscalable(A,B,fill,C);CHKERRQ(ierr);
       break;
 
     case 2:
@@ -736,7 +736,6 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   MatDestroy(&adpd);
   PetscFree(j_temp);
   PetscFree(adpoj);
-  PetscFree(adpj);
   PetscFree(adpoi);
 
   ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr);

@@ -663,7 +663,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
   ierr = PetscMalloc1(aopi[am]+1,&aopj);CHKERRQ(ierr);
   ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &ptap->apj);CHKERRQ(ierr);
-  ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &adpj);CHKERRQ(ierr);
+  //ierr = PetscMalloc1(aopi[am] + adpoi[am] + adpdi[am], &adpj);CHKERRQ(ierr);
   ierr = PetscMalloc1(poff_i[am] + adpdi[am] + adpoi[am], &adpoj);CHKERRQ(ierr);
 
 
@@ -676,7 +676,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   adpoJ = adpoj;
   adpdJ = adpdj;
   aopJ = aopj;
-  adpJ = adpj;
+  //adpJ = adpj;
   apj  = ptap->apj;
   apJ = apj; // still empty
 
@@ -703,7 +703,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     aopJ += aopnz;
     adpoJ += adponz;
     adpdJ += adpdnz;
-    adpJ += adpnz;
+    //adpJ += adpnz;
     apJ += apnz;
     api[i+1] = api[i] + apnz;
   }
@@ -766,7 +766,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
   PetscFree(j_temp);
   PetscFree(adpoj);
-  PetscFree(adpj);
+  //PetscFree(adpj);
   //PetscFree(ptap->apj);
   PetscFree(aopj);
   //PetscFree(api);

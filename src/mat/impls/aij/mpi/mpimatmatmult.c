@@ -559,7 +559,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   p_off = (Mat_SeqAIJ*)((p->B)->data);
   poff_i = p_off->i; poff_j = p_off->j;
 
-  ierr      = PetscMalloc1(pn+2,&j_temp);CHKERRQ(ierr);
+  ierr      = PetscMalloc1(pN+2,&j_temp);CHKERRQ(ierr);
 
   ierr = PetscLogEventEnd(step1,0,0,0,0);CHKERRQ(ierr);
   ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
@@ -622,8 +622,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   /* destroy lists of free space and other temporary array(s) */
 
 
-  ierr = PetscMalloc1(aopothi[am] + adpoi[am] + adpdi[am], &ptap->apj);CHKERRQ(ierr);
-  ierr = PetscMalloc1(adpoi[am], &adpoj);CHKERRQ(ierr);
+  ierr = PetscMalloc1(aopothi[am] + adpoi[am] + adpdi[am]+2, &ptap->apj);CHKERRQ(ierr);
+  ierr = PetscMalloc1(adpoi[am]+2, &adpoj);CHKERRQ(ierr);
 
   // Copy from linked list to j-array
   ierr = PetscFreeSpaceContiguous(&free_space_diag,adpoj);CHKERRQ(ierr);
@@ -662,7 +662,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   }
 
   /* malloc apa to store dense row A[i,:]*P */
-  ierr = PetscCalloc1(pN,&apa);CHKERRQ(ierr);
+  ierr = PetscCalloc1(pN+2,&apa);CHKERRQ(ierr);
 
   ptap->apa = apa;
   ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);

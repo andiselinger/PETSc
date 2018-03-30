@@ -67,7 +67,7 @@ int main(int argc,char **argv)
   ierr = MatSetOptionsPrefix(B,"B_");CHKERRQ(ierr);
   ierr = MatMatMult(A,B,MAT_INITIAL_MATRIX,fill,&C);CHKERRQ(ierr); /* C = A*B */
   ierr = MatSetOptionsPrefix(C,"C_");CHKERRQ(ierr);
-  //ierr = MatView(C,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
+  ierr = MatView(C,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
   if (!rank) {ierr = PetscPrintf(PETSC_COMM_SELF,"\n");CHKERRQ(ierr);}
 
   ierr = MatDestroy(&A);CHKERRQ(ierr);

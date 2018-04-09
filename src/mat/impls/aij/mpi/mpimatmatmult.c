@@ -698,8 +698,9 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   *C = Cmpi;
 
   /* set MatInfo */
-  afill = (PetscReal)api[am]/(adi[am]+aoi[am]+pi_loc[pm]+1) + 1.e-5;
-  if (afill < 1.0) afill = 1.0;
+  //afill = (PetscReal)api[am]/(adi[am]+aoi[am]+pi_loc[pm]+1) + 1.e-5;
+  //if (afill < 1.0) afill = 1.0;
+  afill = 1.0;
   Cmpi->info.mallocs           = nspacedouble;
   Cmpi->info.fill_ratio_given  = fill;
   Cmpi->info.fill_ratio_needed = afill;

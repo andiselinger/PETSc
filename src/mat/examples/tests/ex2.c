@@ -17,7 +17,9 @@ int main(int argc,char **argv)
 
   PetscInt       i,M,N,Istart,Iend,n=7,j,J,Ii,m=8,k,o=1;
 
-  ierr = PetscInitialize(&argc,&argv,(char*)0,help);if (ierr) return ierr;
+  ierr = PetscInitialize(&argc,&argv,(char*)0,help);
+  CHKERRQ(ierr);
+  
   ierr = PetscOptionsGetInt(NULL,NULL,"-m",&m,NULL);CHKERRQ(ierr);
   ierr = PetscOptionsGetInt(NULL,NULL,"-n",&n,NULL);CHKERRQ(ierr);
   ierr = PetscOptionsGetInt(NULL,NULL,"-o",&o,NULL);CHKERRQ(ierr);

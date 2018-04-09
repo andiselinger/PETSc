@@ -71,7 +71,7 @@ PETSC_INTERN PetscErrorCode MatMatMult_MPIAIJ_MPIAIJ(Mat A,Mat B,MatReuse scall,
     ierr = PetscLogEventEnd(MAT_MatMultSymbolic,A,B,0,0);CHKERRQ(ierr);
   }
   ierr = PetscLogEventBegin(MAT_MatMultNumeric,A,B,0,0);CHKERRQ(ierr);
-  ierr = (*(*C)->ops->matmultnumeric)(A,B,*C);CHKERRQ(ierr);
+  //ierr = (*(*C)->ops->matmultnumeric)(A,B,*C);CHKERRQ(ierr);
   ierr = PetscLogEventEnd(MAT_MatMultNumeric,A,B,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
@@ -544,6 +544,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
   adpoi[0]    = 0;
   ptap->api = api;
+  api[0] = 0;
 
   /* create and initialize a linked list, will be used for both A_diag * P_loc_off and A_offd * P_oth */
   ierr = PetscLLCondensedCreate(pN,pN,&lnk,&lnkbt);CHKERRQ(ierr);

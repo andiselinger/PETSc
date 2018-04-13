@@ -12,6 +12,8 @@ int main(int argc,char **argv)
   PetscMPIInt    size,rank;
   PetscBool      test_hypre=PETSC_FALSE;
   PetscScalar    v;
+  PetscBool      equal=PETSC_FALSE;
+  char           stencil[PETSC_MAX_PATH_LEN];
 
   PetscInt       i,M,N,Istart,Iend,n=7,j,J,Ii,m=8,k,o=1;
 

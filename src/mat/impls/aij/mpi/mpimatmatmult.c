@@ -705,15 +705,18 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   Mat                adpd, aopoth;
 
 
-  PetscLogEvent step1, step2, step3, step4, step5, step6, step_all;
-  PetscLogEventRegister("step1", PETSC_VIEWER_CLASSID, &step1);
-  PetscLogEventRegister("step2", PETSC_VIEWER_CLASSID, &step2);
-  PetscLogEventRegister("step3", PETSC_VIEWER_CLASSID, &step3);
-  PetscLogEventRegister("step4", PETSC_VIEWER_CLASSID, &step4);
-  PetscLogEventRegister("step5", PETSC_VIEWER_CLASSID, &step5);
-  PetscLogEventRegister("step6", PETSC_VIEWER_CLASSID, &step6);
+  PetscLogEvent mat1, mat2, mat3, step_mem_alloc, step_merge, prealloc6, step_all, step_setVal, step_mat_assem, step_cleanup;
+  PetscLogEventRegister("mat1", PETSC_VIEWER_CLASSID, &mat1);
+  PetscLogEventRegister("mat2", PETSC_VIEWER_CLASSID, &mat2);
+  PetscLogEventRegister("mat3", PETSC_VIEWER_CLASSID,  &mat3);
+  PetscLogEventRegister("step_mem_alloc", PETSC_VIEWER_CLASSID, &step_mem_alloc);
+  PetscLogEventRegister("step_merge", PETSC_VIEWER_CLASSID, &step_merge);
+  PetscLogEventRegister("prealloc", PETSC_VIEWER_CLASSID, &prealloc6);
+  PetscLogEventRegister("setValues", PETSC_VIEWER_CLASSID, &step_setVal);
+  PetscLogEventRegister("mat_assem", PETSC_VIEWER_CLASSID, &step_mat_assem);
+  PetscLogEventRegister("step_cleanup", PETSC_VIEWER_CLASSID, &step_cleanup);
   PetscLogEventRegister("total", PETSC_VIEWER_CLASSID, &step_all);
-  ierr = PetscLogEventBegin(step1,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
   ierr = PetscLogEventBegin(step_all,0,0,0,0);CHKERRQ(ierr);
 
   PetscFunctionBegin;
@@ -749,10 +752,13 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   /* create and initialize a linked list, will be used for both A_diag * P_loc_off and A_offd * P_oth */
   ierr = PetscLLCondensedCreate(pN,pN,&lnk,&lnkbt);CHKERRQ(ierr);
   ierr = MatPreallocateInitialize(comm,am,pn,dnz,onz);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
 
+  ierr = PetscLogEventBegin(mat1,0,0,0,0);CHKERRQ(ierr);
   MatMatMultSymbolic_SeqAIJ_SeqAIJ(a->A, p->A, fill, &adpd);
+  ierr = PetscLogEventEnd(mat1,0,0,0,0);CHKERRQ(ierr);
 
-
+  ierr = PetscLogEventBegin(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
   adpd_seq = (Mat_SeqAIJ*)((adpd)->data);
   adpdi = adpd_seq->i; adpdj = adpd_seq->j;
 
@@ -762,15 +768,14 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
   ierr      = PetscMalloc1(pN+2,&j_temp);CHKERRQ(ierr);
 
-  ierr = PetscLogEventEnd(step1,0,0,0,0);CHKERRQ(ierr);
-  ierr = PetscLogEventBegin(step2,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
   //////////////////////////////////////
   /* Symbolic calc of the A_diag * p_loc_off */
   //////////////////////////////////////
   /* Initial FreeSpace size is fill*(nnz(A)+nnz(P)) */
+  ierr = PetscLogEventBegin(mat2,0,0,0,0);CHKERRQ(ierr);
   ierr = PetscFreeSpaceGet(PetscRealIntMultTruncate(fill,PetscIntSumTruncate(adi[am],PetscIntSumTruncate(aoi[am],pi_loc[pm]))),&free_space_diag);CHKERRQ(ierr);
   current_space = free_space_diag;
-
   for (i=0; i<am; i++) {
       /* A_diag * P_loc_off */
     nzi = adi[i+1] - adi[i];
@@ -802,8 +807,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     current_space->local_used      += adponz;
     current_space->local_remaining -= adponz;
   }
-  ierr = PetscLogEventEnd(step2,0,0,0,0);CHKERRQ(ierr);
-  ierr = PetscLogEventBegin(step3,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(mat2,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(mat3,0,0,0,0);CHKERRQ(ierr);
 
   //////////////////////////////////////
   /* Symbolic calc of A_off * P_oth */
@@ -816,8 +821,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
 
   ///////////////////////////////////////////
   ///////////////////////////////////////////
-  ierr = PetscLogEventEnd(step3,0,0,0,0);CHKERRQ(ierr);
-  ierr = PetscLogEventBegin(step4,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(mat3,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
 
   /* Allocate space for apj, adpj, aopj, ... */
   /* destroy lists of free space and other temporary array(s) */
@@ -836,8 +841,8 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   apj  = ptap->apj;
   apJ = apj; // still empty
 
-  ierr = PetscLogEventEnd(step4,0,0,0,0);CHKERRQ(ierr);
-  ierr = PetscLogEventBegin(step5,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step_merge,0,0,0,0);CHKERRQ(ierr);
   //////////////////////////////////////////////////////////////
   // MERGE j-arrays of A_off * P, A_diag * P_loc_off, and
   // A_diag * P_loc_diag to get A*P
@@ -861,13 +866,14 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
     apJ += apnz;
     api[i+1] = api[i] + apnz;
   }
-
+  ierr = PetscLogEventEnd(step_merge,0,0,0,0);CHKERRQ(ierr);
   /* malloc apa to store dense row A[i,:]*P */
+  ierr = PetscLogEventBegin(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
   ierr = PetscCalloc1(pN+2,&apa);CHKERRQ(ierr);
 
   ptap->apa = apa;
-  ierr = PetscLogEventEnd(step5,0,0,0,0);CHKERRQ(ierr);
-  ierr = PetscLogEventBegin(step6,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step_mem_alloc,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(prealloc6,0,0,0,0);CHKERRQ(ierr);
   /* create and assemble symbolic parallel matrix Cmpi */
   /*----------------------------------------------------*/
   ierr = MatCreate(comm,&Cmpi);CHKERRQ(ierr);
@@ -877,15 +883,21 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   ierr = MatSetType(Cmpi,MATMPIAIJ);CHKERRQ(ierr);
   ierr = MatMPIAIJSetPreallocation(Cmpi,0,dnz,0,onz);CHKERRQ(ierr);
   ierr = MatPreallocateFinalize(dnz,onz);CHKERRQ(ierr);
+
+  ierr = PetscLogEventEnd(prealloc6,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step_setVal,0,0,0,0);CHKERRQ(ierr);
   for (i=0; i<am; i++) {
     row  = i + rstart;
     apnz = api[i+1] - api[i];
     ierr = MatSetValues(Cmpi, 1, &row, apnz, apj, apa, INSERT_VALUES);CHKERRQ(ierr);
     apj += apnz;
   }
+  ierr = PetscLogEventEnd(step_setVal,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step_mat_assem,0,0,0,0);CHKERRQ(ierr);
   ierr = MatAssemblyBegin(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(Cmpi,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
-
+  ierr = PetscLogEventEnd(step_mat_assem,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventBegin(step_cleanup,0,0,0,0);CHKERRQ(ierr);
   ptap->destroy        = Cmpi->ops->destroy;
   ptap->duplicate      = Cmpi->ops->duplicate;
   Cmpi->ops->matmultnumeric = MatMatMultNumeric_MPIAIJ_MPIAIJ_nonscalable;
@@ -919,8 +931,7 @@ PetscErrorCode MatMatMultSymbolic_MPIAIJ_MPIAIJ_new(Mat A,Mat P,PetscReal fill,M
   PetscFree(j_temp);
   PetscFree(adpoj);
   PetscFree(adpoi);
-
-  ierr = PetscLogEventEnd(step6,0,0,0,0);CHKERRQ(ierr);
+  ierr = PetscLogEventEnd(step_cleanup,0,0,0,0);CHKERRQ(ierr);
   ierr = PetscLogEventEnd(step_all,0,0,0,0);CHKERRQ(ierr);
   PetscFunctionReturn(0);
 }
